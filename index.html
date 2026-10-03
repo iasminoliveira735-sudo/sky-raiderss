@@ -1,0 +1,1323 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Sky Raiders — Almeida Studios</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#071225;color:#fff;font-family:Arial Black,Impact,sans-serif}
+button{font:inherit;border:0;color:#fff;cursor:pointer}
+#app{width:100vw;height:100vh;position:relative;overflow:hidden;background:
+radial-gradient(circle at 50% 35%,#284c78 0,#10243f 36%,#070f20 100%)}
+#app:before{content:"";position:absolute;inset:0;opacity:.25;background:
+linear-gradient(120deg,transparent 0 45%,#1d7bb7 45.2% 45.7%,transparent 46% 100%),
+linear-gradient(25deg,transparent 0 65%,#214d82 65.2% 65.7%,transparent 66%)}
+.hidden{display:none!important}
+.top{position:absolute;top:12px;left:12px;right:12px;z-index:10;display:flex;justify-content:space-between;gap:10px}
+.profile,.resources{background:#121c31dd;border:2px solid #4f6b8f;border-radius:14px;box-shadow:0 8px 20px #0007}
+.profile{width:310px;padding:10px;display:flex;gap:10px;align-items:center}
+.avatar{width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,#1fc8ff,#3457ff);display:grid;place-items:center;border:2px solid #bdefff;font-size:27px}
+.profile .name{font-size:16px}.profile small{display:block;color:#a9bfd8;margin-top:3px;font:11px Arial}
+.xp{height:8px;background:#07101f;border-radius:8px;margin-top:7px;overflow:hidden}.xp i{display:block;width:64%;height:100%;background:#30e4ff}
+.resources{display:flex;align-items:center;gap:7px;padding:8px}
+.res{min-width:92px;height:45px;border-radius:10px;background:#0a1325;border:1px solid #48617e;display:flex;align-items:center;justify-content:center;gap:7px}
+.res b{font-size:14px}.ico{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:#ffd34d;color:#172033}.ico.g{background:#31e79b;border-radius:7px;transform:rotate(45deg)}.ico.g span{transform:rotate(-45deg)}
+.topbtn{width:45px;height:45px;border-radius:10px;background:#1b2c47;border:1px solid #5c7898;font-size:20px}
+.menuGrid{position:absolute;left:18px;top:110px;bottom:150px;width:145px;z-index:8;display:flex;flex-direction:column;gap:9px}
+.menuBtn{width:145px;min-height:53px;border-radius:12px;background:linear-gradient(#203957,#14263e);border:2px solid #557493;box-shadow:0 5px 0 #07101b;display:flex;align-items:center;gap:10px;padding:7px 11px;text-align:left}
+.menuBtn:active{transform:translateY(4px);box-shadow:0 1px 0 #07101b}.menuBtn b{width:30px;text-align:center;font-size:20px}.menuBtn span{font-size:11px}
+.menuBtn.active{border-color:#34e7ff;background:linear-gradient(#245c73,#15364d)}
+.hero{position:absolute;inset:100px 165px 145px 165px;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:3}
+.rank{padding:7px 15px;border-radius:9px;background:#111d32;border:2px solid #5e7d9d;font-size:12px;box-shadow:0 5px 0 #060c15}
+.rank strong{color:#37eaff;font-size:19px}.rank small{display:block;text-align:center;color:#9bb2ca;font:9px Arial;margin-top:2px}
+.shipArea{position:relative;width:390px;height:350px;display:flex;align-items:center;justify-content:center}
+.shipGlow{position:absolute;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,#20d9ff55,transparent 68%);animation:pulse 2.4s infinite}
+.ship{position:relative;width:180px;height:250px;animation:float 2.8s ease-in-out infinite;filter:drop-shadow(0 22px 13px #0008)}
+.shipCore{position:absolute;left:54px;top:14px;width:72px;height:225px;background:linear-gradient(90deg,#1766b4,#51eaff 48%,#1553a4);clip-path:polygon(50% 0,74% 18%,100% 87%,65% 76%,50% 100%,35% 76%,0 87%,26% 18%);border:4px solid #07111f}
+.cockpit{position:absolute;left:66px;top:65px;width:48px;height:67px;border-radius:50%;background:linear-gradient(135deg,#dffcff,#2188c8);border:4px solid #07111f;z-index:3}
+.wing{position:absolute;top:105px;width:105px;height:105px;background:linear-gradient(145deg,#8e40ff,#315be8);border:4px solid #07111f}.wl{left:-4px;clip-path:polygon(65% 0,100% 20%,60% 100%,0 83%)}.wr{right:-4px;clip-path:polygon(35% 0,100% 83%,40% 100%,0 20%)}
+.engine{position:absolute;top:184px;width:29px;height:48px;background:#182b48;border:4px solid #07111f;border-radius:7px;z-index:4}.el{left:57px}.er{right:57px}.engine:after{content:"";position:absolute;left:4px;right:4px;top:43px;height:58px;background:linear-gradient(#fff,#30e9ff,transparent);animation:flame .16s infinite alternate}
+.shipLabel{position:absolute;bottom:2px;text-align:center;font-size:18px;letter-spacing:2px;text-shadow:2px 2px #000}
+.stats{position:absolute;bottom:-30px;display:flex;gap:5px}.stats span{font:9px Arial Black;background:#101b2d;border:1px solid #4f6b8c;padding:5px 6px;border-radius:6px}
+.rightMenu{position:absolute;right:18px;top:115px;width:145px;z-index:8;display:flex;flex-direction:column;gap:9px}
+.rightCard{background:#101d31dd;border:2px solid #4f6b8f;border-radius:12px;padding:9px}.rightCard small{color:#9eb6ce;font:9px Arial}.bar{height:8px;background:#07101d;border-radius:6px;margin-top:5px;overflow:hidden}.bar i{display:block;height:100%;background:#32dff6}
+.bottom{position:absolute;left:18px;right:18px;bottom:12px;height:120px;z-index:9;display:grid;grid-template-columns:220px 1fr 190px;gap:10px}
+.panel{background:#111d31e8;border:2px solid #4f6b8f;border-radius:14px;box-shadow:0 7px 18px #0006}
+.fleet{display:flex;align-items:center;gap:10px;padding:10px}.miniShip{width:70px;height:70px;border-radius:10px;background:#0a1527;border:1px solid #3d5875;display:grid;place-items:center;font-size:34px}.fleet b{font-size:13px}.fleet small{display:block;color:#9bb3ca;font:10px Arial;margin-top:5px}
+.event{padding:10px 14px;cursor:pointer}.event .tag{color:#37eaff;font-size:10px}.event h2{font-size:19px;margin:8px 0 4px}.event p{margin:0;color:#a9bdd2;font:11px Arial}
+.play{background:linear-gradient(#ffd83f,#f3a900);color:#171b22;border:2px solid #fff1a0;border-radius:14px;box-shadow:0 7px 0 #744e00;font-size:30px}.play:active{transform:translateY(5px);box-shadow:0 2px 0 #744e00}.play small{display:block;font:10px Arial Black;margin-bottom:5px}
+.overlay{position:absolute;inset:0;background:#06101dec;z-index:50;display:none;padding:25px}.overlay.show{display:flex;flex-direction:column}
+.overlayHead{display:flex;justify-content:space-between;align-items:center}.overlay h1{margin:0;font-size:28px}.close{width:45px;height:45px;background:#d64252;border:2px solid #ff9ba5;border-radius:10px;font-size:25px}
+.content{flex:1;overflow:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-content:start;margin-top:20px}.card{background:#14243a;border:2px solid #4c6988;border-radius:13px;padding:16px;min-height:145px}.card h2{font-size:17px;margin:0 0 8px}.card p{font:12px Arial;color:#b5c8db;line-height:1.45}.card button{margin-top:8px;background:#2ccef0;color:#06101b;padding:9px 12px;border-radius:8px;font-size:11px}
+.tabs{display:flex;gap:7px;margin-top:14px}.tab{background:#1b2d45;border:1px solid #557493;padding:9px 12px;border-radius:8px;font-size:11px}.tab.active{background:#2bbedf;color:#07101a}
+#toast{position:absolute;left:50%;bottom:17%;transform:translate(-50%,20px);background:#0c1728;border:2px solid #57dfff;padding:11px 17px;border-radius:10px;z-index:100;opacity:0;pointer-events:none;transition:.25s;font-size:12px}.toastShow{opacity:1!important;transform:translate(-50%,0)!important}
+#game{position:absolute;inset:0;background:#030914;z-index:70;display:none}
+#gameCanvas{width:100%;height:100%}.gameHud{position:absolute;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;z-index:4}.hudBox{background:#101c2cdd;border:2px solid #557493;padding:8px 12px;border-radius:9px;font-size:12px}.exitGame{position:absolute;bottom:15px;left:15px;z-index:5;background:#c93b4c;border:2px solid #ff8792;border-radius:9px;padding:10px 15px}.touch{position:absolute;right:16px;bottom:15px;z-index:5;display:grid;grid-template-columns:55px 55px 55px;grid-template-rows:55px 55px}.touch button{background:#ffffff18;border:2px solid #bdefff;border-radius:10px;font-size:22px}.up{grid-column:2}.left{grid-column:1;grid-row:2}.down{grid-column:2;grid-row:2}.right{grid-column:3;grid-row:2}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1deg)}}@keyframes pulse{50%{transform:scale(1.1);opacity:.65}}@keyframes flame{to{height:78px;opacity:.55}}
+@media(max-width:850px){.top{top:7px}.profile{width:220px}.resources .res{min-width:65px}.resources .res b{font-size:11px}.topbtn{display:none}.menuGrid{left:7px;width:82px}.menuBtn{width:82px;min-height:48px;padding:5px;justify-content:center}.menuBtn span{display:none}.menuBtn b{width:auto}.rightMenu{right:7px;width:82px}.rightCard{padding:7px}.rightCard strong,.rightCard small{font-size:8px}.hero{left:82px;right:82px;top:85px;bottom:120px}.shipArea{transform:scale(.75)}.bottom{left:7px;right:7px;bottom:7px;height:94px;grid-template-columns:125px 1fr 105px;gap:6px}.fleet{padding:6px}.miniShip{width:50px;height:50px;font-size:25px}.fleet b{font-size:10px}.fleet small{font-size:8px}.event{padding:7px}.event h2{font-size:13px}.event p{font-size:8px}.play{font-size:21px}.play small{font-size:8px}.content{grid-template-columns:1fr 1fr}.overlay{padding:15px}.overlay h1{font-size:22px}}
+
+/* POLISHED VISUAL PASS */
+#app{
+background:radial-gradient(ellipse at 50% 12%,#4c91ba55,transparent 32%),
+radial-gradient(ellipse at 80% 72%,#3157a044,transparent 38%),
+linear-gradient(180deg,#08192e 0%,#123b59 48%,#050e19 100%)}
+#app:before{opacity:.7;background:linear-gradient(180deg,transparent 0 55%,#02081199 100%),repeating-linear-gradient(165deg,transparent 0 75px,#79d8ff0c 76px 78px,transparent 79px)}
+#app:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;background:radial-gradient(ellipse at center,transparent 43%,#0008 100%)}
+.profile,.resources,.panel,.rightCard,.overlay .card{background:linear-gradient(145deg,#1c3048f5,#081525f5);box-shadow:inset 0 1px #fff2,0 12px 28px #0007}
+.menuBtn{background:linear-gradient(180deg,#294a68,#142b43 55%,#0b1828);box-shadow:inset 0 1px #fff2,0 6px 0 #040a11,0 10px 20px #0006}
+.menuBtn:hover{filter:brightness(1.18);transform:translateY(-2px)}
+.menuBtn.active{background:linear-gradient(#236f8a,#143b52);border-color:#55eaff;box-shadow:0 0 20px #2beaff22,0 6px 0 #07121a}
+.avatar{background:radial-gradient(circle at 35% 30%,#e8ffff,#27c9ed 35%,#173e78);box-shadow:inset 0 0 18px #fff5,0 0 18px #2eeaff33}
+.rank{background:linear-gradient(#263d58,#0a1728);box-shadow:inset 0 1px #fff2,0 8px 20px #0008}
+.hero:before{content:"";position:absolute;width:520px;height:370px;border-radius:50%;background:radial-gradient(ellipse,#39dfff1c,transparent 68%);filter:blur(8px);z-index:-1}
+.shipArea{filter:drop-shadow(0 25px 20px #0008)}
+.shipGlow{background:radial-gradient(circle,#48e8ff66,#287cff18 40%,transparent 70%);filter:blur(4px)}
+.ship{width:210px;height:270px;filter:drop-shadow(0 24px 13px #000b)}
+.shipCore{left:63px;width:84px;height:245px;background:linear-gradient(90deg,#082d59,#218acb 24%,#b9fbff 47%,#1679bc 67%,#072852);box-shadow:inset 8px 0 15px #fff2}
+.cockpit{left:76px;top:68px;width:57px;height:73px;background:linear-gradient(135deg,#fff,#7beaff 20%,#17608e 60%,#062844);box-shadow:inset 9px 0 15px #fff5,0 0 15px #42eaff55}
+.wing{top:108px;width:120px;height:118px;background:linear-gradient(150deg,#1f2d69,#4059c8 35%,#7c61df 63%,#20284c);box-shadow:inset 0 0 0 1px #fff2}
+.engine{box-shadow:inset 0 0 12px #53dfff44}
+.engine:after{background:linear-gradient(#fff,#bffcff 12%,#27dfff 42%,transparent);filter:blur(3px);box-shadow:0 0 18px #2feaff}
+.shipLabel{color:#eaffff;text-shadow:0 2px 10px #000}
+.stats span{background:linear-gradient(#1a3047,#091522);box-shadow:inset 0 1px #fff1}
+.play{background:linear-gradient(#fff07b,#ffd02f 43%,#e49a00);box-shadow:inset 0 2px #fff9,0 8px 0 #754d00,0 10px 25px #0007}
+.overlay{background:radial-gradient(ellipse at 50% 0,#214d70,#071423 55%,#03090f)}
+.overlay .card{box-shadow:inset 0 1px #fff1,0 12px 25px #0006}
+.card button{background:linear-gradient(#54e8ff,#149bc4);box-shadow:inset 0 1px #fff7,0 3px 0 #07516c}
+#game{background:linear-gradient(#020812,#06182a)}
+.hudBox{background:linear-gradient(#1e354d,#071321);box-shadow:inset 0 1px #fff2,0 6px 18px #0008}
+.skyParticles{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.skyParticles:before,.skyParticles:after{content:"";position:absolute;inset:-20%;background:radial-gradient(ellipse at 15% 25%,#dffaff0b 0 6%,transparent 14%),radial-gradient(ellipse at 75% 32%,#dffaff0b 0 7%,transparent 15%),radial-gradient(ellipse at 45% 70%,#8bcfff08 0 8%,transparent 16%);animation:clouds 35s linear infinite}
+.skyParticles:after{transform:scale(1.3);animation-duration:52s;animation-direction:reverse}
+@keyframes clouds{from{transform:translateX(-3%)}to{transform:translateX(3%)}}
+.detailLine{position:absolute;top:145px;width:38px;height:4px;background:#baf8ff88;border-radius:4px;z-index:5}.dl{left:35px;transform:rotate(-18deg)}.dr{right:35px;transform:rotate(18deg)}
+.light{position:absolute;top:164px;width:8px;height:8px;border-radius:50%;z-index:6;animation:blink .65s infinite alternate}.navL{left:42px;background:#ff5063;box-shadow:0 0 12px 4px #ff5063}.navR{right:42px;background:#4dffcf;box-shadow:0 0 12px 4px #4dffcf}
+@keyframes blink{to{opacity:.25}}
+
+/* ===== DETAILED AIRCRAFT SYSTEM ===== */
+.ship{
+  width:260px!important;height:310px!important;
+  position:relative;
+  transform-origin:center;
+}
+.shipCore{
+  left:88px!important;top:18px!important;width:84px!important;height:246px!important;
+  clip-path:polygon(50% 0,67% 8%,82% 30%,96% 69%,83% 88%,66% 81%,50% 100%,34% 81%,17% 88%,4% 69%,18% 30%,33% 8%);
+  background:linear-gradient(90deg,#061d3b 0%,#135b9a 15%,#55dfff 34%,#d9fbff 47%,#2185c4 58%,#0c4478 82%,#03182e 100%)!important;
+  border:3px solid #071321;
+  box-shadow:inset 10px 0 15px #fff2,inset -10px 0 18px #0007,0 0 18px #1bdfff24;
+}
+.shipCore:before{
+  content:"";position:absolute;left:16px;right:16px;top:20px;height:150px;
+  border-left:2px solid #baf8ff55;border-right:2px solid #061b35aa;
+  background:linear-gradient(90deg,transparent,#ffffff0c,transparent);
+}
+.shipCore:after{
+  content:"";position:absolute;left:9px;right:9px;bottom:25px;height:48px;
+  border-radius:50%;background:radial-gradient(ellipse,#5beaff44,transparent 68%);
+}
+.cockpit{
+  left:100px!important;top:48px!important;width:60px!important;height:86px!important;
+  border-radius:58% 58% 45% 45%!important;
+  background:linear-gradient(135deg,#f9ffff 0%,#94efff 15%,#3e9ec8 37%,#123e64 68%,#031523 100%)!important;
+  border:3px solid #071321!important;
+  transform:perspective(80px) rotateX(-8deg);
+  box-shadow:inset 9px 0 13px #fff8,inset -8px -8px 14px #0008,0 0 18px #46eaff44!important;
+}
+.cockpit:before{
+  content:"";position:absolute;left:9px;top:7px;width:16px;height:44px;border-radius:50%;
+  background:linear-gradient(90deg,#fff9,transparent);transform:rotate(16deg);
+}
+.wing{
+  top:118px!important;width:155px!important;height:125px!important;
+  border:3px solid #071321!important;
+  background:linear-gradient(145deg,#18235b 0%,#394eb6 27%,#765ee0 48%,#303d98 72%,#111b3e 100%)!important;
+  box-shadow:inset 0 8px 15px #fff1,inset 0 -10px 15px #0006,0 4px 8px #0007!important;
+}
+.wl{left:-2px!important;clip-path:polygon(55% 0,100% 15%,79% 37%,62% 48%,42% 100%,0 91%,18% 60%)!important}
+.wr{right:-2px!important;clip-path:polygon(45% 0,100% 91%,58% 100%,38% 48%,21% 37%,0 15%)!important}
+.wing:after{
+  content:"";position:absolute;top:38px;width:66px;height:3px;background:#a7f7ff88;box-shadow:0 8px #101c4988,0 16px #b76eff55;
+}
+.wl:after{left:22px;transform:rotate(-19deg)}.wr:after{right:22px;transform:rotate(19deg)}
+.engine{
+  top:199px!important;width:33px!important;height:58px!important;
+  border:3px solid #071321!important;border-radius:9px!important;
+  background:linear-gradient(90deg,#07182d,#365875,#081729)!important;
+  box-shadow:inset 0 0 13px #70dfff55,0 3px 5px #0009!important;
+}
+.el{left:88px!important}.er{right:88px!important}
+.engine:before{
+  content:"";position:absolute;left:5px;right:5px;top:5px;height:25px;border-radius:5px;
+  background:radial-gradient(circle,#dfffff,#43dfff 40%,#125d93 72%,transparent 73%);
+}
+.engine:after{
+  top:51px!important;height:95px!important;
+  background:linear-gradient(#fff,#bfffff 8%,#48eaff 25%,#167eff 47%,transparent 76%)!important;
+  filter:blur(4px)!important;box-shadow:0 0 22px #29eaff!important;
+}
+.detailLine{top:163px!important;width:55px!important;height:3px!important;background:linear-gradient(90deg,transparent,#c9fbff,transparent)!important;box-shadow:0 0 7px #43eaff}
+.dl{left:40px!important}.dr{right:40px!important}
+.light{top:184px!important;width:9px!important;height:9px!important}
+.navL{left:54px!important}.navR{right:54px!important}
+.ship .antenna{
+  position:absolute;left:127px;top:3px;width:6px;height:30px;background:#6eeeff;
+  box-shadow:0 0 8px #4deaff;border-radius:3px;z-index:7;
+}
+.ship .antenna:after{
+  content:"";position:absolute;left:-4px;top:-4px;width:14px;height:14px;border-radius:50%;
+  background:#dffcff;box-shadow:0 0 15px 4px #2deaff;
+}
+.ship .missile{
+  position:absolute;top:153px;width:9px;height:38px;border-radius:5px;background:linear-gradient(#e9ffff,#56b8db,#152c50);
+  border:2px solid #071321;z-index:6;
+}
+.ship .missile.l{left:53px;transform:rotate(13deg)}.ship .missile.r{right:53px;transform:rotate(-13deg)}
+.ship .missile:after{content:"";position:absolute;bottom:-5px;left:1px;width:5px;height:10px;background:#ff8d38;filter:blur(2px)}
+
+.ship.thunder .shipCore{background:linear-gradient(90deg,#07152b,#0e4b7b,#e7ffff,#1dd9ff,#073f72,#030e1d)!important}
+.ship.thunder .wing{background:linear-gradient(145deg,#17233a,#1e628d,#49e5ff,#17486e,#071625)!important}
+.ship.thunder .engine:after{background:linear-gradient(#fff,#7fffff,#27cfff,#426cff,transparent)!important}
+.ship.viper .shipCore{background:linear-gradient(90deg,#241107,#71300d,#ffd08a,#b75b1a,#381506,#120a06)!important}
+.ship.viper .wing{background:linear-gradient(145deg,#291307,#6b2c0e,#c8752b,#5a240d,#1a0b05)!important}
+.ship.viper .engine:after{background:linear-gradient(#fff,#ffd78a,#ff8a2a,#e74417,transparent)!important}
+
+#game{overflow:hidden;position:absolute}
+#gameCanvas{position:absolute;inset:0;z-index:1}
+#game:before{
+ content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ background:
+ radial-gradient(ellipse at 18% 28%,#1a72a514 0 7%,transparent 24%),
+ radial-gradient(ellipse at 82% 58%,#5438b514 0 8%,transparent 25%),
+ linear-gradient(180deg,#020a15,#061526 52%,#020913);
+}
+#gameScene{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+#gamePlayer{
+ position:absolute!important;left:0;top:0;margin:0;
+ width:260px!important;height:310px!important;
+ transform:translate(-50%,-50%) scale(.39)!important;
+ animation:none!important;filter:drop-shadow(0 18px 12px #000c);
+}
+#gamePlayer .engine:after{animation:gameFlame .09s infinite alternate}
+@keyframes gameFlame{to{height:115px!important;opacity:.7}}
+.enemyDom{
+ position:absolute;left:0;top:0;width:150px;height:150px;
+ transform:translate(-50%,-50%);
+ transform-origin:center;
+ filter:drop-shadow(0 10px 10px #000b);
+ transition:none;
+ pointer-events:none;
+}
+.enemyVisual{position:absolute;left:50%;top:50%;width:92px;height:92px;transform:translate(-50%,-50%)}
+.enemyVisual:before,.enemyVisual:after{content:"";position:absolute;display:block}
+.enemyDom .enemyCore{position:absolute;left:50%;top:50%;width:26px;height:26px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#ff7a8f 28%,#c51645 58%,#420b20);box-shadow:0 0 12px #ff365f,0 0 30px #ff365f66}
+.enemyDom.scout .enemyVisual{width:72px;height:82px;clip-path:polygon(50% 0,100% 82%,68% 72%,50% 100%,32% 72%,0 82%);background:linear-gradient(150deg,#ff8b45,#d52b4e 55%,#55102e);box-shadow:0 0 18px #ff4d55}
+.enemyDom.scout .enemyVisual:after{left:32px;top:23px;width:8px;height:38px;background:linear-gradient(#fff,#ff5b83,transparent);box-shadow:0 0 12px #ff5b83}
+.enemyDom.striker .enemyVisual{width:92px;height:62px;top:52%;background:linear-gradient(145deg,#ff315e,#71143f);clip-path:polygon(0 50%,30% 28%,42% 0,58% 0,70% 28%,100% 50%,70% 72%,58% 100%,42% 100%,30% 72%);box-shadow:0 0 18px #ff315e}
+.enemyDom.striker .enemyVisual:after{left:39px;top:21px;width:14px;height:20px;border-radius:8px;background:#ffc5d0;box-shadow:0 0 16px #ff5276}
+.enemyDom.tank .enemyVisual{width:100px;height:82px;background:linear-gradient(145deg,#586779,#1a2433);border:4px solid #9aa9b8;border-radius:18px;box-shadow:inset 0 0 18px #101822,0 0 12px #71879a}
+.enemyDom.tank .enemyVisual:before{left:50%;top:-22px;width:26px;height:32px;transform:translateX(-50%);background:#3a4656;border:4px solid #a7b6c4;border-radius:10px 10px 3px 3px;box-shadow:0 -15px 0 -7px #d2dbe4}
+.enemyDom.tank .enemyVisual:after{left:14px;right:14px;bottom:13px;height:7px;background:#ff536e;border-radius:8px;box-shadow:60px 0 #ff536e,30px 0 #ff536e;opacity:.9}
+.enemyDom.zigzag .enemyVisual{width:82px;height:82px;background:linear-gradient(135deg,#8c55ff,#33207a 55%,#10192f);clip-path:polygon(50% 0,67% 28%,100% 20%,78% 50%,100% 80%,67% 72%,50% 100%,33% 72%,0 80%,22% 50%,0 20%,33% 28%);filter:drop-shadow(0 0 14px #8d5cff)}
+.enemyDom.zigzag .enemyVisual:after{left:35px;top:29px;width:12px;height:24px;border-radius:50%;background:#fff;box-shadow:0 0 14px #d5c4ff}
+.enemyDom.shooter .enemyVisual{width:88px;height:72px;background:linear-gradient(180deg,#263a4e,#0b1624);border:3px solid #35e0ff;border-radius:18px 18px 30px 30px;box-shadow:0 0 15px #22dfff55}
+.enemyDom.shooter .enemyVisual:before{left:50%;top:-18px;width:10px;height:32px;transform:translateX(-50%);background:linear-gradient(#fff,#3deaff);box-shadow:0 0 12px #3deaff}
+.enemyDom.shooter .enemyVisual:after{left:18px;top:30px;width:52px;height:8px;background:#d7ffff;border-radius:8px;box-shadow:0 0 14px #35e0ff}
+.enemyDom.boss{width:220px;height:180px;transform:translate(-50%,-50%);filter:drop-shadow(0 20px 15px #000d) drop-shadow(0 0 20px #a85cff66)}
+.enemyDom.boss .enemyVisual{width:170px;height:125px;background:linear-gradient(145deg,#7b2fa8,#271b59 50%,#100d24);border:5px solid #c47cff;border-radius:45% 45% 25% 25%;box-shadow:inset 0 0 30px #a85cff55,0 0 25px #a85cff}
+.enemyDom.boss .enemyVisual:before{left:50%;top:-28px;width:34px;height:50px;transform:translateX(-50%);background:linear-gradient(#dff,#b65cff,#32155d);border:4px solid #e2b8ff;border-radius:50% 50% 15px 15px;box-shadow:0 0 20px #c45cff}
+.enemyDom.boss .enemyVisual:after{left:18px;right:18px;bottom:18px;height:12px;background:#ff3e75;border-radius:12px;box-shadow:0 0 18px #ff3e75,102px 0 #ff3e75}
+.enemyDom.boss .enemyCore{width:38px;height:38px;background:radial-gradient(circle,#fff,#ff6cff 30%,#9c26d9 60%,#23053a);box-shadow:0 0 18px #ff5cff,0 0 40px #a82cff}
+.enemyDom.boss .enemyCore:after{content:"";position:absolute;inset:-16px;border:2px solid #d88cff;border-radius:50%;animation:bossRing 1.4s linear infinite}
+@keyframes bossRing{to{transform:rotate(360deg) scale(1.08)}}
+.energyBolt{
+ position:absolute;width:7px;height:30px;border-radius:8px;
+ background:linear-gradient(#fff,#fff47c 30%,#ffc928 65%,#ff7b00);
+ box-shadow:0 0 8px #fff,0 0 18px #ffc928;
+ transform:translate(-50%,-50%);
+ z-index:4;pointer-events:none;
+}
+.gameHud .hudBox{font-size:13px}
+
+html,body,#app,#game,button,canvas,.overlay,.panel,.card,.menuBtn{
+  -webkit-user-select:none!important;user-select:none!important;
+  -webkit-touch-callout:none!important;
+}
+html,body{overscroll-behavior:none}
+#game,#gameCanvas{touch-action:none}
+input,textarea{user-select:text}
+
+.shopVisual{
+  height:92px;border-radius:12px;margin-bottom:10px;position:relative;overflow:hidden;
+  background:radial-gradient(circle at 50% 45%,#2edfff28,transparent 45%),linear-gradient(145deg,#0b2038,#07111f);
+  border:1px solid #496c8c;box-shadow:inset 0 1px #fff2;
+}
+.shopVisual .crystal{position:absolute;width:43px;height:43px;left:calc(50% - 21px);top:23px;
+  background:linear-gradient(135deg,#d9ffff,#24d7ff 38%,#1954df);clip-path:polygon(50% 0,92% 25%,78% 88%,50% 100%,22% 88%,8% 25%);
+  filter:drop-shadow(0 0 12px #28dfff)}
+.shopVisual .bolt{position:absolute;width:14px;height:65px;left:calc(50% - 7px);top:14px;background:linear-gradient(#fff,#ffe45a,#ff8a00);clip-path:polygon(55% 0,100% 0,65% 42%,100% 42%,25% 100%,43% 55%,0 55%)}
+.shopVisual .armor{position:absolute;left:calc(50% - 32px);top:18px;width:64px;height:55px;border:6px solid #5eeaff;border-radius:18px 18px 30px 30px;box-shadow:inset 0 0 18px #42dfff66,0 0 15px #42dfff44}
+.shopVisual .armor:after{content:"";position:absolute;left:15px;right:15px;top:13px;height:8px;background:#e9ffff;border-radius:8px;box-shadow:0 16px #1a78aa}
+.shopVisual .engineIcon{position:absolute;left:calc(50% - 36px);top:20px;width:72px;height:48px;display:flex;justify-content:space-between}
+.shopVisual .engineIcon i{width:23px;height:48px;border-radius:8px;background:linear-gradient(#aefcff,#168ac0);box-shadow:0 0 12px #28dfff}
+.shopVisual .engineIcon i:after{content:"";display:block;width:15px;height:30px;margin:44px 4px 0;background:linear-gradient(#fff,#35eaff,transparent);filter:blur(3px)}
+.shopVisual .drone{position:absolute;left:calc(50% - 42px);top:27px;width:84px;height:36px;background:linear-gradient(90deg,#8e5cff,#25dfff,#8e5cff);clip-path:polygon(0 65%,27% 40%,40% 0,60% 0,73% 40%,100% 65%,67% 75%,50% 100%,33% 75%);filter:drop-shadow(0 0 10px #40dfff)}
+.shopVisual .stars{position:absolute;inset:0;background:radial-gradient(circle at 15% 25%,#fff 0 1px,transparent 2px),radial-gradient(circle at 82% 35%,#fff 0 1px,transparent 2px),radial-gradient(circle at 25% 78%,#fff 0 1px,transparent 2px)}
+
+.joystick{
+  position:absolute;left:24px;bottom:22px;width:138px;height:138px;border-radius:50%;
+  z-index:12;background:radial-gradient(circle,#ffffff16 0 38%,#ffffff09 39% 67%,#ffffff04 68%);
+  border:2px solid #b9ecff99;box-shadow:inset 0 0 25px #43dfff12,0 8px 22px #0008;
+  touch-action:none;
+}
+.joystick .stick{
+  position:absolute;left:44px;top:44px;width:50px;height:50px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#efffff,#38d9ff 35%,#17638e 72%,#092033);
+  border:2px solid #d2f8ff;box-shadow:0 0 18px #2eeaff55;
+  transition:transform .05s linear;touch-action:none;
+}
+.fireBtn{
+  position:absolute;right:26px;bottom:35px;width:104px;height:104px;border-radius:50%;z-index:12;
+  background:radial-gradient(circle at 35% 25%,#fff7a4,#ffcf31 28%,#e56c16 70%,#7d241c);
+  border:4px solid #fff0a0;box-shadow:inset 0 0 15px #fff8,0 8px 25px #0009,0 0 22px #ff8d3333;
+  font-size:18px;color:#351300;text-shadow:0 1px #fff8;touch-action:none;
+}
+.fireBtn:active{transform:scale(.93);filter:brightness(1.2)}
+
+/* ===== V5 COMBAT OVERHAUL ===== */
+.gamePauseBtn{
+  position:absolute;top:10px;right:10px;z-index:20;width:48px;height:48px;
+  border-radius:12px;background:linear-gradient(#294963,#0d1d31);
+  border:2px solid #9eefff;color:#fff;font-size:21px;
+  box-shadow:inset 0 1px #fff4,0 6px 18px #0009;
+}
+.gamePauseBtn:active{transform:scale(.94)}
+#pauseOverlay{
+  position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;
+  background:#020914c9;backdrop-filter:blur(7px);
+}
+#pauseOverlay.show{display:flex}
+.pauseBox{
+  width:min(430px,88vw);padding:24px;border-radius:20px;text-align:center;
+  background:linear-gradient(145deg,#203c58,#091525);
+  border:2px solid #67eaff;box-shadow:0 20px 60px #000b,inset 0 1px #fff3;
+}
+.pauseBox h1{margin:0 0 6px;font-size:29px}
+.pauseBox p{margin:0 0 18px;color:#a9c5d9;font:12px Arial}
+.pauseActions{display:grid;gap:10px}
+.pauseActions button{
+  min-height:48px;border-radius:11px;border:2px solid #557493;
+  background:linear-gradient(#294b68,#11283f);color:#fff;
+}
+.pauseActions button.primary{background:linear-gradient(#55eaff,#148bb5);color:#06131c;border-color:#baf7ff}
+.pauseActions button.danger{background:linear-gradient(#ed6672,#a92f42);border-color:#ffadb5}
+.waveBanner{
+  position:absolute;left:50%;top:18%;transform:translate(-50%,-20px);
+  z-index:12;opacity:0;pointer-events:none;padding:10px 18px;border-radius:12px;
+  background:#0a1a2be8;border:1px solid #66eaff;box-shadow:0 0 25px #35eaff22;
+  transition:.3s;text-align:center;
+}
+.waveBanner.show{opacity:1;transform:translate(-50%,0)}
+.waveBanner b{display:block;color:#63efff;font-size:18px}.waveBanner small{color:#9db9cf;font:10px Arial}
+#comboHud{color:#ffe56b}
+.powerupDom{
+  position:absolute;left:0;top:0;width:34px;height:34px;transform:translate(-50%,-50%);
+  z-index:6;border-radius:50%;display:grid;place-items:center;font:bold 18px Arial;
+  border:2px solid #fff;box-shadow:0 0 18px currentColor, inset 0 0 12px #fff5;
+  animation:powerFloat .7s ease-in-out infinite alternate;
+}
+.powerupDom.shield{background:#257cff;color:#9eefff}.powerupDom.rapid{background:#ff8d1f;color:#fff3a8}
+.powerupDom.heal{background:#20b96b;color:#b9ffda}.powerupDom.bomb{background:#b23cff;color:#f2d8ff}
+@keyframes powerFloat{to{transform:translate(-50%,-50%) translateY(-6px) scale(1.08)}}
+.enemyDom.scout{filter:drop-shadow(0 10px 8px #000b) hue-rotate(80deg)}
+.enemyDom.striker{filter:drop-shadow(0 10px 8px #000b) hue-rotate(190deg) saturate(1.8)}
+.enemyDom.tank{transform:translate(-50%,-50%) scale(.38) rotate(180deg);filter:drop-shadow(0 16px 10px #000c) saturate(.8)}
+.enemyDom.tank .shipCore{transform:scaleX(1.25);background:linear-gradient(90deg,#211b2b,#703f83,#e0a9ff,#5b2d79,#17111f)!important}
+.enemyDom.tank .wing{background:linear-gradient(145deg,#292334,#633e72,#a95bd0,#34223e)!important}
+.enemyDom.zigzag{filter:drop-shadow(0 10px 8px #000b) hue-rotate(45deg)}
+.enemyDom.zigzag .wing{transform:skewX(-13deg);background:linear-gradient(145deg,#3d1c18,#c14b2d,#ffbf4a,#572017)!important}
+.enemyDom.shooter{filter:drop-shadow(0 10px 8px #000b) hue-rotate(265deg)}
+.enemyDom.shooter .wing{background:linear-gradient(145deg,#17204a,#3b49b8,#4df1ff,#202762)!important}
+.enemyDom.boss{
+  transform:translate(-50%,-50%) scale(.58) rotate(180deg);
+  filter:drop-shadow(0 20px 15px #000d) drop-shadow(0 0 18px #ff4d9a88);
+}
+.enemyShot{
+  position:absolute;width:8px;height:22px;transform:translate(-50%,-50%);
+  border-radius:8px;background:linear-gradient(#fff,#ff6b92,#e51d4f);
+  box-shadow:0 0 12px #ff315f;z-index:5;pointer-events:none;
+}
+.enemyShot.blue{background:linear-gradient(#fff,#7cf6ff,#278dff);box-shadow:0 0 12px #28dfff}
+#gamePlayer.shielded:before{
+  content:"";position:absolute;left:39px;top:36px;width:182px;height:226px;
+  border:3px solid #7ff6ff;border-radius:48% 48% 44% 44%;
+  background:radial-gradient(ellipse at 50% 42%,#55eaff10 0 48%,#28dfff06 70%,transparent 72%);
+  box-shadow:0 0 16px #36eaff88,inset 0 0 20px #36eaff22;
+  opacity:.62;pointer-events:none;z-index:20;
+  animation:shieldPulse 1.25s ease-in-out infinite alternate;
+}
+.shielded:after{content:"";position:absolute;left:50px;top:62px;width:160px;height:180px;border:1px dashed #a9fbff55;border-radius:45%;transform:rotate(-8deg);pointer-events:none;z-index:21}
+@keyframes shieldPulse{to{opacity:.88;transform:scale(1.025)}}
+.damageFlash{animation:damageFlash .18s linear 2}
+@keyframes damageFlash{50%{filter:brightness(2.2) drop-shadow(0 0 18px #ff2e54)}}
+
+
+
+/* ===== V6 CLEAN COMBAT + MOBILE CONTROLS ===== */
+.gameHud{
+  top:10px;left:10px;right:68px;
+  display:flex;justify-content:flex-start;gap:7px;
+  pointer-events:none;
+}
+.hudBox{
+  min-width:54px;height:43px;padding:7px 10px;
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  border:1px solid #6e9cbb;border-radius:13px;
+  background:linear-gradient(145deg,#122a41dd,#071322dd);
+  box-shadow:0 5px 18px #0008,inset 0 1px #fff3;
+  font-size:15px;
+}
+.hpHud{color:#ff9eb0}.scoreHud{color:#ffe77a}.waveHud{color:#76edff}.comboHudClean{color:#ffe66e}
+.gamePauseBtn{
+  top:9px;right:9px;z-index:90;width:52px;height:52px;
+  border-radius:14px;touch-action:manipulation;
+  pointer-events:auto;
+}
+#pauseOverlay{z-index:120;pointer-events:none}
+#pauseOverlay.show{display:flex;pointer-events:auto}
+.pauseBox,.pauseBox button{pointer-events:auto;touch-action:manipulation}
+.pauseBox{z-index:121}
+.bossHud{
+  position:absolute;left:50%;top:66px;transform:translateX(-50%);
+  width:min(310px,58vw);z-index:15;display:none;pointer-events:none;text-align:center;
+}
+.bossHud.show{display:block}
+.bossName{
+  font:bold 11px Arial;color:#ff9db1;letter-spacing:1.5px;
+  text-shadow:0 0 10px #ff365f;
+}
+.bossBar{
+  margin-top:5px;height:8px;border:1px solid #ff8ca1;border-radius:8px;
+  background:#260b16cc;overflow:hidden;box-shadow:0 0 14px #ff3f6422;
+}
+.bossBar i{display:block;width:100%;height:100%;background:linear-gradient(90deg,#ff335f,#ff8b36,#ffe66d);transition:width .08s linear}
+.dashBtn{
+  position:absolute;right:42px;bottom:152px;width:62px;height:62px;z-index:13;
+  border-radius:50%;font-size:25px;color:#d9fbff;
+  background:radial-gradient(circle at 35% 25%,#d8ffff,#35c9ee 35%,#14527b 72%,#071c31);
+  border:2px solid #b9f5ff;box-shadow:0 0 22px #27dfff66,0 7px 20px #0009;
+  touch-action:none;
+}
+.dashBtn:active{transform:scale(.9)}
+.dashBtn.cooldown{filter:grayscale(1);opacity:.45}
+#game.dashPulse{animation:dashPulse .22s linear}
+@keyframes dashPulse{50%{filter:brightness(1.55)}}
+#game.shake{animation:gameShake .18s linear}
+@keyframes gameShake{25%{transform:translate(4px,-2px)}50%{transform:translate(-4px,2px)}75%{transform:translate(3px,1px)}}
+@media(max-width:520px){
+  .gameHud{right:66px;gap:5px}
+  .hudBox{min-width:46px;height:39px;padding:6px 8px;font-size:13px}
+  .dashBtn{right:31px;bottom:150px;width:58px;height:58px}
+  .bossHud{top:62px;width:55vw}
+}
+
+
+/* SKY RAIDERS V7 — ARSENAL */
+.arsenalContent{display:grid;grid-template-columns:1fr 1.05fr 1fr;gap:14px;align-items:stretch;padding:14px;overflow:auto;height:calc(100% - 66px)}
+.arsenalList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-content:start}
+.eqCard{background:linear-gradient(145deg,#101d33ee,#081225ee);border:1px solid #365474;border-radius:14px;padding:7px;cursor:pointer;transition:.18s;min-height:168px;position:relative;overflow:hidden}
+.eqCard:hover,.eqCard.selected{border-color:#63dfff;transform:translateY(-2px);box-shadow:0 0 22px #19bde633}
+.eqCard.rarityFrame.rar-C{border-color:#647a8b}.eqCard.rarityFrame.rar-B{border-color:#2787a6}.eqCard.rarityFrame.rar-A{border-color:#b37a24}.eqCard.rarityFrame.rar-S{border-color:#8d42bc;box-shadow:inset 0 0 18px #b85cff12}
+.eqTexture{height:104px;border-radius:10px;overflow:hidden;position:relative;background:#08111e;box-shadow:inset 0 0 0 1px #ffffff12}
+.itemSVG{width:100%;height:100%;display:block}.classBadge{position:absolute;left:7px;top:7px;width:27px;height:27px;display:grid;place-items:center;border-radius:7px;background:#0b1522e8;color:#fff;font:900 14px Arial;border:1px solid #ffffff55;box-shadow:0 3px 10px #0008}.rar-S .classBadge{background:#8d3fd7}.rar-A .classBadge{background:#c47b1d}.rar-B .classBadge{background:#157f9d}.rar-C .classBadge{background:#526676}.ownedDot{position:absolute;right:7px;top:7px;width:25px;height:25px;display:grid;place-items:center;border-radius:50%;background:#0c2b24;color:#7dffca;border:1px solid #7dffca;font:bold 14px Arial}
+.eqMeta{padding:8px 3px 2px;display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center}.eqCard h3{font-size:11px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.eqMeta strong{grid-column:2;grid-row:1/3;color:#ffe16a;font:700 10px Arial}.eqType{font:700 8px Arial;letter-spacing:1px;color:#7892a9}.eqCard small{color:#91a9c2;font:10px Arial}.rarity{font:700 10px Arial;letter-spacing:1px}.rar-C{color:#a9bdcf}.rar-B{color:#50d6a0}.rar-A{color:#ffbf4d}.rar-S{color:#dc8cff}
+.eqCard .equipped{position:absolute;left:10px;bottom:8px;background:#22cfff22;border:1px solid #2bd9ff66;border-radius:6px;padding:3px 6px;font:700 8px Arial;color:#7eeaff}
+.detailTitleWrap{display:flex;align-items:center;gap:10px}.detailTexture{width:64px;height:64px;flex:0 0 64px;border-radius:11px;overflow:hidden;border:1px solid #45677f;background:#07111e}.detailTexture .itemSVG{width:100%;height:100%}
+.arsenalShip{min-height:430px;border:1px solid #365474;border-radius:18px;background:radial-gradient(circle at 50% 45%,#1a4568aa,#071225 70%);display:grid;place-items:center;position:relative;overflow:hidden}
+.arsenalShip:before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 23px,#39d9ff0c 24px),repeating-linear-gradient(90deg,transparent 0 23px,#39d9ff0c 24px)}
+.arsenalShip .ship{transform:scale(1.55);position:relative;z-index:2}.shipPulse{position:absolute;width:220px;height:220px;border-radius:50%;border:1px solid #40dfff44;box-shadow:0 0 45px #28cfff22;animation:arsPulse 2.2s ease-in-out infinite}@keyframes arsPulse{50%{transform:scale(1.12);opacity:.55}}
+.slot{position:absolute;z-index:4;padding:6px 8px;border-radius:8px;background:#071426dd;border:1px solid #426584;color:#a9c9df;font:700 9px Arial;letter-spacing:.7px}.slot.motor{top:12%;left:50%;transform:translateX(-50%)}.slot.weapon{bottom:16%;left:7%}.slot.core{bottom:16%;right:7%}.slot.shield{top:49%;left:5%}.slot.armor{top:49%;right:5%}.slot.aim{top:22%;right:7%}
+.arsenalDetail{background:#0a1426ee;border:1px solid #365474;border-radius:18px;padding:16px;min-height:430px}.detailTop{display:flex;justify-content:space-between;gap:10px}.detailTop h2{margin:0;font-size:18px}.detailTop small{display:block;color:#829bb5;margin-top:5px;font:11px Arial}.detailDesc{color:#a9bdd0;font:12px Arial;line-height:1.45;margin:14px 0}.statRow{display:flex;justify-content:space-between;border-bottom:1px solid #203750;padding:8px 0;font:11px Arial}.statRow b{color:#73eaff}.price{font-size:18px;margin:16px 0;color:#ffe16a}.eqAction{width:100%;padding:12px;border-radius:10px;background:linear-gradient(90deg,#12638a,#287de1);font-size:12px;font-weight:800}.eqAction.secondary{background:#182a42;border:1px solid #486985;margin-top:8px}.arsenalMoney{font:700 12px Arial;color:#ffe16a}
+@media(max-width:900px){.arsenalContent{grid-template-columns:1fr 1fr}.arsenalShip{grid-column:1/-1;min-height:280px;order:0}.arsenalList{order:1}.arsenalDetail{order:2}.arsenalShip .ship{transform:scale(1.05)}}
+@media(max-width:520px){.arsenalContent{display:flex;flex-direction:column;padding:10px}.arsenalShip{min-height:300px;order:0}.arsenalList{order:1;grid-template-columns:repeat(2,minmax(0,1fr))}.eqTexture{height:96px}.arsenalDetail{order:2;min-height:auto}.eqCard{min-height:118px}.slot{font-size:8px;padding:5px 6px}}
+
+/* ===== V7.5 COMPLETE UPDATE ===== */
+#loadingScreen{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(circle at 50% 42%,#123b57 0,#061321 42%,#02070d 100%);color:#e8fbff;overflow:hidden}
+#loadingScreen:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 0 45%,#43eaff10 50%,transparent 55%),repeating-linear-gradient(90deg,transparent 0 49px,#43eaff09 50px);animation:loadGrid 5s linear infinite}
+.loadingLogo{position:relative;font:900 34px Arial;letter-spacing:7px;text-shadow:0 0 22px #39dcff88}
+.loadingLogo span{color:#5de9ff}
+.loadingShip{position:relative;width:250px;height:105px;animation:loadFloat 1.7s ease-in-out infinite}
+.loadingShip:before{content:"";position:absolute;left:36px;top:36px;width:180px;height:38px;border-radius:60% 45% 45% 60%;background:linear-gradient(90deg,#2b3c4b,#dce8ed,#536a7b,#1c2935);border:2px solid #8fefff;box-shadow:0 0 28px #2adfff55}
+.loadCore{position:absolute;left:112px;top:44px;width:32px;height:24px;border-radius:50%;background:#dffcff;box-shadow:0 0 25px #44eaff,0 0 55px #44eaff}
+.loadWing{position:absolute;top:61px;width:90px;height:28px;background:linear-gradient(145deg,#203345,#6f8797,#263746);border:1px solid #77dff0}
+.loadWing.left{left:13px;transform:skewX(-20deg) rotate(-8deg)}.loadWing.right{right:13px;transform:skewX(20deg) rotate(8deg)}
+.loadEngine{position:absolute;top:43px;width:28px;height:29px;border-radius:50%;background:radial-gradient(circle,#eaffff 0 15%,#5cecff 25%,#0a4266 65%,#071521);box-shadow:0 0 24px #4deaff}
+.loadEngine.e1{left:52px}.loadEngine.e2{right:52px}
+.loadingText{position:relative;font:700 12px Arial;letter-spacing:3px;color:#8fb2c9}
+.loadingBar{position:relative;width:min(360px,76vw);height:7px;border:1px solid #4b7894;border-radius:9px;background:#081522;overflow:hidden}
+.loadingBar i{display:block;width:0;height:100%;background:linear-gradient(90deg,#1a8fc1,#72efff,#fff);box-shadow:0 0 15px #46eaff;transition:width .15s}
+.loadingTip{position:relative;font:11px Arial;color:#6f93ab;min-height:14px}
+@keyframes loadFloat{50%{transform:translateY(-7px)}}@keyframes loadGrid{to{transform:translateX(50px)}}
+body.loaded #loadingScreen{opacity:0;pointer-events:none;transition:opacity .5s}
+body.loaded{overflow:auto}
+
+/* Store tabs */
+.shopTabs{display:flex;gap:8px;padding:10px 14px 0}
+.shopTab{flex:1;min-height:42px;border:1px solid #365474;border-radius:10px;background:#0a1728;color:#8faac0;font-weight:800}
+.shopTab.active{background:linear-gradient(90deg,#174e6c,#187e9d);color:#eaffff;border-color:#62eaff;box-shadow:0 0 18px #28dfff22}
+.storeView{display:none;height:calc(100% - 118px)}.storeView.show{display:block}
+.shipStore{height:100%;overflow:auto;padding:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-content:start}
+.shipCard{position:relative;background:linear-gradient(145deg,#0f1f32ee,#071222ee);border:1px solid #355776;border-radius:16px;padding:10px;min-height:240px;overflow:hidden}
+.shipCard.owned{border-color:#3fcfbb}.shipCard.equipped{border-color:#65eaff;box-shadow:0 0 22px #35ddff1c}
+.shipPreview{height:125px;display:grid;place-items:center;background:radial-gradient(circle,#1d537088,#071321 70%);border-radius:12px;overflow:hidden}
+.shipPreview .ship{transform:scale(.7);position:relative}.shipCard h3{margin:9px 0 4px;font-size:14px}.shipCard p{margin:0 0 9px;color:#8fa8bb;font:10px Arial;line-height:1.35}.shipStats{display:flex;gap:5px;flex-wrap:wrap}.shipStats span{font:8px Arial;color:#a9d6e6;border:1px solid #355a73;border-radius:5px;padding:3px 5px}.shipCard button{width:100%;margin-top:9px;padding:9px;border-radius:9px;background:linear-gradient(90deg,#12648a,#2378c0);font-weight:800}.shipCard button.secondary{background:#14263b;border-color:#486a82}
+.shipPrice{position:absolute;right:10px;top:10px;color:#ffe36b;font:bold 10px Arial}
+.shipLock{position:absolute;left:10px;top:10px;background:#090f19dd;border:1px solid #61798b;padding:4px 6px;border-radius:6px;color:#9cb2c1;font:8px Arial}
+@media(max-width:900px){.shipStore{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.shopTabs{padding:8px 10px 0}.storeView{height:calc(100% - 108px)}.shipStore{grid-template-columns:1fr;padding:10px}.shipCard{min-height:220px}}
+
+/* Equipment actually installed on the combat ship */
+#gamePlayer.equippedWeapon .shipCore{box-shadow:inset 0 0 12px #ffdc58,0 0 15px #ffc832}
+#gamePlayer.equippedMotor .engine{box-shadow:0 0 22px #63efff, inset 0 0 8px #fff}
+#gamePlayer.equippedArmor .wing{border-color:#d8e9f2;filter:saturate(.65) brightness(1.15)}
+#gamePlayer.equippedCore .cockpit{box-shadow:0 0 25px #bf65ff,inset 0 0 12px #fff}
+#gamePlayer.equippedAim .antenna{box-shadow:0 0 16px #ffe56b}
+#gamePlayer.equippedShield .shipCore{border-color:#64eaff}
+#gamePlayer .eqBadge{position:absolute;z-index:30;left:50%;top:-32px;transform:translateX(-50%);font:700 8px Arial;letter-spacing:1px;color:#9ff6ff;background:#061525dd;border:1px solid #4bdff6;border-radius:6px;padding:3px 6px;white-space:nowrap;opacity:.9}
+
+/* ===== V9 PROFILE / PHASES / TRANSITIONS ===== */
+.profile{cursor:pointer}.avatar.frame-gold,.avatar.frame-purple,.avatar.frame-red,.avatar.frame-green,.avatar.frame-rainbow{border-radius:12px}
+.profile .name{max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.profilePanel{display:grid;grid-template-columns:1.05fr 1.5fr;gap:14px;overflow:auto;padding:14px}
+.profileHero{display:grid;grid-template-columns:82px 1fr;gap:14px;align-items:center;padding:18px;border-radius:16px;background:linear-gradient(145deg,#173c58,#081321);border:1px solid #4e7995}
+.profileAvatar{width:78px;height:78px;border-radius:20px;display:grid;place-items:center;font-size:35px;background:radial-gradient(circle,#3ce7ff,#15537a 55%,#091624);border:2px solid #75edff;box-shadow:0 0 24px #31dcff44}
+.profileName{font-size:22px;font-weight:900}.profileSub{color:#86a9bf;font:11px Arial;margin-top:5px}
+.profileActions{display:flex;gap:8px;margin-top:12px}.profileActions button{flex:1;padding:10px;border-radius:9px;background:linear-gradient(90deg,#12648a,#2389b5);border:1px solid #6eeaff}
+.achievementGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.achievement{padding:12px;border-radius:13px;background:linear-gradient(145deg,#142b42,#081322);border:1px solid #345773;min-height:90px}.achievement.done{border-color:#ffd45b;box-shadow:0 0 18px #ffd45b14}.achievement .achIcon{font-size:24px;float:left;margin-right:9px}.achievement h3{margin:0;font-size:12px}.achievement p{margin:5px 0 0;color:#89a6ba;font:9px Arial;line-height:1.35}.achievement small{display:block;margin-top:7px;color:#ffd85d;font:8px Arial;font-weight:800}
+.phaseGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;overflow:auto;padding:14px;align-items:stretch}.phaseCard{position:relative;padding:14px;border-radius:14px;background:linear-gradient(145deg,#142c43,#071322);border:1px solid #345875;min-height:190px;box-sizing:border-box;display:flex;flex-direction:column;overflow:hidden}.phaseCard.selected{border-color:#67eaff;box-shadow:0 0 20px #39ddff22}.phaseCard.done{border-color:#5ed69d}.phaseCard.locked{opacity:.48;filter:saturate(.55)}.phaseNum{font-size:25px;font-weight:900;color:#64eaff}.phaseCard h3{margin:5px 0;font-size:13px;line-height:1.25;min-height:33px}.phaseCard p{font:9px Arial;color:#8ea8b9;min-height:32px;line-height:1.35;margin:4px 0 10px}.phaseCard button{width:100%;min-height:42px;padding:9px;border-radius:8px;background:linear-gradient(90deg,#12698e,#237ca5);font-weight:800;margin-top:auto;white-space:normal;line-height:1.15}.phaseCard.locked button{background:#1a2938;color:#7890a0}.phaseReward{position:absolute;right:10px;top:10px;color:#ffd85b;font:bold 9px Arial}
+#phaseTransition{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 42%,#155d7e 0,#071a2b 30%,#02070e 78%);overflow:hidden}.phaseTransition.show{display:flex;animation:phaseIn .35s ease}.phaseTransition:before,.phaseTransition:after{content:"";position:absolute;inset:-20%;background:repeating-linear-gradient(90deg,transparent 0 70px,#62eaff0c 72px 73px);transform:rotate(-9deg);animation:phaseScan 2.5s linear infinite}.phaseTransition:after{background:repeating-linear-gradient(0deg,transparent 0 54px,#c56cff0a 56px 57px);transform:rotate(7deg);animation-duration:3.2s}.phaseCore{position:relative;z-index:2;width:min(650px,88vw);padding:42px 30px;text-align:center;border:1px solid #65eaff88;border-radius:22px;background:linear-gradient(145deg,#112c44ed,#050e19f2);box-shadow:0 0 70px #2ceaff25,inset 0 1px #fff3}.phaseCore:before{content:"";position:absolute;left:10%;right:10%;top:0;height:2px;background:linear-gradient(90deg,transparent,#65efff,transparent);box-shadow:0 120px #ffb94d55}.phaseTag{font:800 10px Arial;letter-spacing:5px;color:#72ecff}.phaseCore h1{margin:12px 0 4px;font-size:clamp(32px,7vw,64px);letter-spacing:2px}.phaseCore h2{margin:0;color:#ffd65b;font-size:18px}.phaseCore p{color:#8daabd;font:11px Arial;margin:16px 0 0}.phaseLines{height:40px;margin:18px auto 0;max-width:420px;border-top:1px solid #4c6f84;border-bottom:1px solid #4c6f84;position:relative}.phaseLines:after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:#45dfff55;box-shadow:0 0 14px #45dfff}.phaseCountdown{margin-top:14px;color:#dffcff;font:bold 11px Arial;letter-spacing:3px}
+#phaseEnd{position:fixed;inset:0;z-index:10001;display:none;align-items:center;justify-content:center;background:#020812d9;backdrop-filter:blur(10px)}#phaseEnd.show{display:flex}.phaseEndBox{width:min(520px,90vw);padding:28px;text-align:center;border:2px solid #5eeaff;border-radius:20px;background:linear-gradient(145deg,#183c58,#071321);box-shadow:0 20px 80px #000b}.phaseEndBox h1{font-size:34px;margin:0 0 4px}.phaseEndBox p{color:#9ab5c7;font:11px Arial}.rewardBig{font-size:25px;color:#ffd75c;font-weight:900;margin:15px}.phaseEndActions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.phaseEndActions button{padding:12px;border-radius:10px;background:linear-gradient(90deg,#176a8f,#238eb4);border:1px solid #67eaff;font-weight:900}.phaseEndActions button.secondary{background:#14273a;border-color:#47677e}
+@keyframes phaseIn{from{opacity:0;transform:scale(1.03)}to{opacity:1;transform:scale(1)}}@keyframes phaseScan{to{transform:translateX(90px) rotate(-9deg)}}
+@media(max-width:850px){.profilePanel{grid-template-columns:1fr}.achievementGrid{grid-template-columns:1fr}.phaseGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.phaseCore{padding:28px 18px}.phaseCore h1{font-size:35px}}
+
+/* ===== V12 — 900 FASES / DIFICULDADE ===== */
+.phaseToolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:12px 14px 0;padding:12px 14px;border:1px solid #345875;border-radius:14px;background:linear-gradient(145deg,#10283d,#07121f);position:sticky;top:0;z-index:5}.phaseToolbar b{display:block;color:#e9fdff;font-size:15px}.phaseToolbar span{display:block;color:#7f9daf;font:10px Arial;margin-top:4px}.phaseFilters{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.phaseFilters button{padding:8px 9px;border-radius:8px;border:1px solid #345875;background:#0b1a29;color:#9eb6c7;font:bold 9px Arial}.phaseFilters button.active{border-color:#65eaff;background:#15516a;color:#eaffff}.phaseCard .phaseDiff{display:inline-block;margin-top:5px;padding:3px 6px;border-radius:5px;background:#15293a;color:#7feeff;font:bold 8px Arial;letter-spacing:.5px}.phaseCard.diff-fácil .phaseDiff{color:#83e0ae}.phaseCard.diff-medio .phaseDiff{color:#82dfff}.phaseCard.diff-dificil .phaseDiff{color:#ffd46a}.phaseCard.diff-hard .phaseDiff{color:#ff9c67}.phaseCard.diff-extremo .phaseDiff{color:#ff718d}.phaseCard.diff-lendario .phaseDiff{color:#d68cff}.phasePager{display:flex;align-items:center;justify-content:center;gap:14px;padding:4px 14px 16px}.phasePager button{min-width:120px;padding:10px;border-radius:9px;border:1px solid #4b6c82;background:#102539;color:#d9f5ff;font-weight:800}.phasePager span{color:#8da9ba;font:bold 10px Arial;min-width:70px;text-align:center}
+@media(max-width:700px){.phaseToolbar{display:block}.phaseFilters{justify-content:flex-start;margin-top:10px}.phaseFilters button{padding:8px 7px}.phasePager{gap:7px}.phasePager button{min-width:100px}}
+
+/* ===== V11 IN-GAME PROFILE + LONGER POWERUPS ===== */
+.renameModal{position:fixed;inset:0;z-index:10050;display:none;align-items:center;justify-content:center;padding:18px;background:#020812d9;backdrop-filter:blur(10px)}
+.renameModal.show{display:flex;animation:phaseIn .2s ease}
+.renameBox{width:min(460px,92vw);padding:26px;border:1px solid #5eeaff;border-radius:20px;background:linear-gradient(145deg,#15354f,#071321);box-shadow:0 20px 80px #000c}
+.renameBox h2{margin:10px 0 5px;font-size:24px}.renameBox p{color:#91aabd;font:11px Arial}.renameBox p b{color:#ffd85c}
+.renameBox input{width:100%;box-sizing:border-box;padding:14px 15px;border-radius:11px;border:1px solid #4d718b;background:#061321;color:#effcff;font-size:17px;font-weight:800;outline:none}.renameBox input:focus{border-color:#63eaff;box-shadow:0 0 18px #36ddff22}
+.renameActions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.renameActions button{min-height:46px;border-radius:10px;border:1px solid #47677e;background:#13263a;color:#cfe4ef;font-weight:800}.renameActions button.primary{background:linear-gradient(90deg,#12698e,#2389b5);border-color:#67eaff;color:#effcff}
+.powerupDom{width:58px!important;height:58px!important;border-radius:15px!important;display:grid;place-items:center;transform:translate(-50%,-50%);border:2px solid #b9f8ff;box-shadow:0 0 20px #2ceaff66,0 6px 18px #0009;z-index:15}
+.powerupDom b{font-size:30px;line-height:1}
+.powerupDom.heal{border-color:#8fffc3}.powerupDom.rapid{border-color:#ffe49b}.powerupDom.shield{border-color:#9eeeff}.powerupDom.bomb{border-color:#e9b7ff}
+@media(max-width:520px){.phaseGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:10px}.phaseCard{min-height:220px;padding:11px}.phaseCard h3{font-size:12px;min-height:42px}.phaseCard p{font-size:8px;min-height:34px}.phaseCard button{min-height:46px;font-size:10px}.renameActions{grid-template-columns:1fr}.renameBox{padding:20px}}
+
+
+/* ===== LOADING SCREEN V10 ===== */
+#loadingScreen{z-index:99999;background:radial-gradient(ellipse at 50% 35%,#164b6b 0,#071728 43%,#01050b 100%);gap:9px;transition:opacity .65s ease,visibility .65s ease}
+#loadingScreen:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(transparent 0 48%,#48eaff0b 50%,transparent 52%),repeating-linear-gradient(90deg,transparent 0 54px,#70eaff08 55px 56px);animation:loadingScan 4s linear infinite}
+.loadingLogo{z-index:2;font-size:38px;letter-spacing:8px}
+.loadingSubtitle{position:relative;z-index:2;font:800 10px Arial;letter-spacing:4px;color:#7fa8c0}
+.loadingShipReal{position:relative;z-index:2;width:330px;height:250px;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 25px 25px #000c)}
+.loadingGameShip{position:relative!important;left:auto!important;top:auto!important;transform:scale(.9)!important;animation:loadingShipFloat 2.2s ease-in-out infinite!important}
+.loadingPercent{position:relative;z-index:2;font:900 28px Arial;color:#e9fdff;letter-spacing:2px;text-shadow:0 0 18px #36eaff}
+.loadingText{z-index:2;min-height:14px}
+.loadingBar{z-index:2;width:min(430px,78vw);height:10px;border-radius:12px;border:1px solid #5c829c;background:#06111e;box-shadow:0 0 25px #27dfff1a,inset 0 0 8px #000}
+.loadingBar i{height:100%;width:0;border-radius:10px;background:linear-gradient(90deg,#0c83b4,#45e9ff,#e8ffff);box-shadow:0 0 18px #40eaff;transition:width .08s linear}
+.loadingTip{z-index:2}
+body.loaded #loadingScreen{opacity:0;visibility:hidden;pointer-events:none}
+@keyframes loadingShipFloat{0%,100%{transform:scale(.9) translateY(0)}50%{transform:scale(.9) translateY(-12px)}}
+.loadingTakeoff .loadingGameShip{animation:loadingTakeoff 1.05s cubic-bezier(.2,.75,.15,1) forwards!important}
+.loadingTakeoff .loadingShipReal{animation:loadingShipFade 1.05s ease forwards}
+.loadingTakeoff .loadingPercent{color:#7dffca}
+.loadingTakeoff .loadingText{color:#7dffca}
+@keyframes loadingTakeoff{0%{transform:scale(.9) translateY(0);filter:drop-shadow(0 10px 12px #0008)}55%{transform:scale(.98) translateY(-55px);filter:drop-shadow(0 28px 35px #2feaff55)}100%{transform:scale(.72) translateY(-230px);filter:drop-shadow(0 45px 45px #2feaff00);opacity:.05}}
+@keyframes loadingShipFade{0%{opacity:1}75%{opacity:1}100%{opacity:0}}
+@keyframes loadingScan{to{transform:translateY(55px)}}
+@media(max-width:600px){.loadingLogo{font-size:28px;letter-spacing:5px}.loadingShipReal{transform:scale(.78);margin:-8px 0}.loadingGameShip{transform:scale(.78)!important}.loadingPercent{font-size:24px}}
+
+
+.profileAvatar{position:relative;cursor:pointer;overflow:hidden}.profileAvatar:after{content:'✎';position:absolute;right:4px;bottom:4px;font-size:10px;background:#071321dd;border:1px solid #63eaff;border-radius:5px;padding:2px 4px;color:#dffbff}.profileAvatar.frame-gold,.avatar.frame-gold{border:3px solid #ffd45b;box-shadow:0 0 22px #ffd45b55}.profileAvatar.frame-purple,.avatar.frame-purple{border:3px solid #b77cff;box-shadow:0 0 22px #a34dff55}.profileAvatar.frame-red,.avatar.frame-red{border:3px solid #ff6b7d;box-shadow:0 0 22px #ff425555}.profileAvatar.frame-green,.avatar.frame-green{border:3px solid #62e6a3;box-shadow:0 0 22px #4dff9a55}.profileAvatar.frame-rainbow,.avatar.frame-rainbow{border:3px solid transparent;background:linear-gradient(#0a1725,#0a1725) padding-box,linear-gradient(90deg,#5eeaff,#b77cff,#ffd45b,#62e6a3,#ff6b7d) border-box;box-shadow:0 0 24px #5eeaff44}.customBox{width:min(620px,94vw);max-height:88vh;overflow:auto;padding:24px;border:1px solid #5eeaff;border-radius:20px;background:linear-gradient(145deg,#15354f,#071321);box-shadow:0 20px 80px #000c}.customBox h2{margin:10px 0 5px}.customBox h3{font-size:13px;margin:18px 0 8px;color:#aeefff}.customPreview{display:flex;align-items:center;gap:14px;padding:12px;border-radius:14px;background:#061321;border:1px solid #2d536d}.previewAvatar{flex:0 0 auto}.customPreview small{display:block;color:#8ea8b9;margin-top:4px}.customGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.customItem{padding:9px;border-radius:11px;background:#0b1c2c;border:1px solid #31536c;color:#dff7ff;cursor:pointer;text-align:left}.customItem.owned{border-color:#4fceef}.customItem.equipped{border-color:#ffd45b;box-shadow:0 0 12px #ffd45b18}.customItem.locked{opacity:.65}.customItem .swatch{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:21px;margin-bottom:6px;background:radial-gradient(circle,#1d5b7c,#081321)}.customItem b{display:block;font-size:10px}.customItem small{display:block;color:#8faabd;font-size:8px;margin-top:3px}.rewardGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.rewardItem{padding:10px;border-radius:11px;background:#0b1b2a;border:1px solid #31536c}.rewardItem.done{border-color:#ffd45b}.rewardItem.claimed{opacity:.6}.rewardItem b{font-size:11px}.rewardItem small{display:block;color:#8ea8b9;font-size:8px;margin:4px 0}.rewardItem button{width:100%;padding:7px;border-radius:7px;border:1px solid #4fdcf7;background:#12698e;color:white;font-weight:800;font-size:9px}.rewardItem button:disabled{opacity:.5}
+@media(max-width:520px){.customGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.rewardGrid{grid-template-columns:1fr}.profileActions{flex-wrap:wrap}.profileActions button{min-height:42px}}
+
+/* MULTIPLAYER */
+.mpWrap{max-width:1000px;margin:auto;padding:20px;overflow:auto;height:calc(100% - 70px)}
+.mpHero{display:flex;align-items:center;gap:14px;margin-bottom:14px}.mpStatusDot{width:14px;height:14px;border-radius:50%;background:#f5b642;box-shadow:0 0 14px #f5b642}.mpStatusDot.online{background:#32e58a;box-shadow:0 0 14px #32e58a}.mpGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.mpGrid input{width:100%;margin:8px 0;padding:13px;border-radius:10px;border:1px solid #48617e;background:#071321;color:#fff}.roomCode{font-size:24px;letter-spacing:5px;text-align:center;margin-top:12px;color:#6eeaff;font-weight:900}.mpLobby{margin-top:14px}.mpPlayer{padding:11px;background:#081522;border:1px solid #28445d;border-radius:10px;margin:7px 0;display:flex;align-items:center;gap:9px}.mpPlayer b{margin-left:auto;color:#6eeaff}.onlineDot{width:9px;height:9px;border-radius:50%;background:#35e58b}.mpNote{margin-top:12px;color:#91a9c2;font:12px Arial;text-align:center}.mpLobby button{margin:8px 5px 0 0}
+@media(max-width:650px){.mpGrid{grid-template-columns:1fr}.mpWrap{padding:10px}.mpHero h2{font-size:17px}}
+</style>
+</head>
+<body>
+<div id="loadingScreen">
+  <div class="loadingLogo">SKY <span>RAIDERS</span></div>
+  <div class="loadingSubtitle">SISTEMA DE VOO • NOVA FALCON</div>
+  <div class="loadingShipReal">
+    <div class="ship loadingGameShip falcon">
+      <div class="shipCore"></div><div class="wing wl"></div><div class="wing wr"></div>
+      <div class="cockpit"></div><div class="engine el"></div><div class="engine er"></div>
+      <div class="detailLine dl"></div><div class="detailLine dr"></div>
+      <div class="light navL"></div><div class="light navR"></div><div class="antenna"></div>
+      <div class="missile l"></div><div class="missile r"></div>
+    </div>
+  </div>
+  <div class="loadingText" id="loadingStatus">INICIALIZANDO SISTEMAS...</div>
+  <div class="loadingPercent" id="loadingPercent">0%</div>
+  <div class="loadingBar"><i id="loadingFill"></i></div>
+  <div class="loadingTip" id="loadingTip">Preparando hangar</div>
+</div>
+<div id="app"><div class="skyParticles"></div>
+<header class="top">
+  <div class="profile" onclick="openPanel('profile')"><div class="avatar" id="topProfileAvatar"><span id="topProfileLogo">✦</span></div><div><div class="name">PILOTO ALMEIDA</div><small>NÍVEL 12 • 1.240 XP</small><div class="xp"><i></i></div></div></div>
+  <div class="resources">
+    <div class="res"><div class="ico">★</div><b id="coins">10000</b></div>
+    <div class="res"><div class="ico g"><span>◆</span></div><b id="gems">1000</b></div>
+    <button class="topbtn" onclick="showToast('Você não tem novas mensagens.')">✉</button>
+    <button class="topbtn" onclick="openPanel('settings')">☷</button>
+  </div>
+</header>
+
+<nav class="menuGrid">
+  <button class="menuBtn active" onclick="openPanel('hangar')"><b>✈</b><span>HANGAR</span></button>
+  <button class="menuBtn" onclick="openPanel('shop')"><b>▣</b><span>ARSENAL</span></button>
+  <button class="menuBtn" onclick="openPanel('missions')"><b>★</b><span>MISSÕES</span></button>
+  <button class="menuBtn" onclick="openPanel('phases')"><b>◆</b><span>FASES</span></button>
+  <button class="menuBtn" onclick="openPanel('upgrades')"><b>⚙</b><span>UPGRADES</span></button>
+  <button class="menuBtn" onclick="openPanel('aircraftLab')"><b>✦</b><span>AERONAVES</span></button>
+  <button class="menuBtn" onclick="openMultiplayer()"><b>🌐</b><span>MULTIPLAYER</span></button>
+</nav>
+
+<section class="hero">
+  <div class="rank">PILOTO RANK <strong>03</strong><small>POWER 82 • COMBATE</small></div>
+  <div class="shipArea">
+    <div class="shipGlow"></div>
+    <div class="ship">
+      <div class="shipCore"></div><div class="wing wl"></div><div class="wing wr"></div>
+      <div class="cockpit"></div><div class="engine el"></div><div class="engine er"></div>
+      <div class="detailLine dl"></div><div class="detailLine dr"></div>
+      <div class="light navL"></div><div class="light navR"></div>
+      <div class="antenna"></div>
+      <div class="missile l"></div><div class="missile r"></div>
+    </div>
+    <div class="shipLabel">NOVA FALCON</div>
+    <div class="stats"><span>ATK 82</span><span>DEF 68</span><span>SPD 91</span></div>
+  </div>
+</section>
+
+<aside class="rightMenu">
+  <div class="rightCard"><small>ENERGIA</small><strong> 78 / 100</strong><div class="bar"><i style="width:78%"></i></div></div>
+  <div class="rightCard"><small>PROGRESSO</small><strong> FASE 12</strong><div class="bar"><i style="width:40%"></i></div></div>
+  <button class="menuBtn" onclick="openPanel('fleet')"><b>◈</b><span>MINHA FROTA</span></button>
+  <button class="menuBtn" onclick="openPanel('leaderboard')"><b>♛</b><span>RANKING</span></button>
+</aside>
+
+<section class="bottom">
+  <div class="panel fleet" onclick="openPanel('fleet')" style="cursor:pointer">
+    <div class="miniShip">✈</div><div><b>MINHA FROTA</b><small>1 de 6 aeronaves</small><small>Nova Falcon selecionada</small></div>
+  </div>
+  <div class="panel event" onclick="openPanel('event')">
+    <div class="tag">EVENTO ATIVO • 07:10</div><h2>OPERAÇÃO: CÉU EM CHAMAS</h2><p>Derrote esquadrões inimigos, sobreviva ao ataque e consiga peças para melhorar sua nave.</p>
+  </div>
+  <button class="play" onclick="startGame()"><small>FASE <span id="selectedPhaseLabel">01</span> • ENERGIA 78</small>JOGAR</button>
+</section>
+
+<!-- Functional panels -->
+<div id="hangar" class="overlay"><div class="overlayHead"><h1>HANGAR</h1><button class="close" onclick="closePanels()">×</button></div>
+<div class="tabs"><button class="tab active">Nave atual</button><button class="tab" onclick="openPanel('fleet')">Frota</button></div>
+<div class="content"><div class="card"><h2>✈ NOVA FALCON</h2><p>Aeronave equilibrada para combate. Clique para equipar.</p><button onclick="equipShip('NOVA FALCON')">EQUIPADA</button></div><div class="card"><h2>⚡ VELOCIDADE</h2><p>91 de velocidade. A nave responde mais rápido aos controles.</p></div><div class="card"><h2>🔫 ARMAMENTO</h2><p>Canhão duplo automático. Dispara enquanto você controla a nave.</p></div></div></div>
+
+<div id="fleet" class="overlay"><div class="overlayHead"><h1>MINHA FROTA</h1><button class="close" onclick="closePanels()">×</button></div>
+<div class="content"><div class="card"><h2>✈ NOVA FALCON</h2><p>Desbloqueada • ATK 82 • DEF 68 • SPD 91</p><button onclick="equipShip('NOVA FALCON')">EQUIPAR</button></div><div class="card"><h2>🚀 THUNDER</h2><p>Bloqueada • Requer nível 18.</p></div><div class="card"><h2>🛩️ VIPER</h2><p>Bloqueada • Complete 15 missões.</p></div></div></div>
+
+<div id="shop" class="overlay"><div class="overlayHead"><h1>SKY RAIDERS — LOJA</h1><div class="arsenalMoney">★ <span id="arsenalCoins">0</span></div><button class="close" onclick="closePanels()">×</button></div>
+<div class="shopTabs"><button id="shopTabEquipment" class="shopTab active" onclick="switchShopTab('equipment')">EQUIPAMENTOS</button><button id="shopTabShips" class="shopTab" onclick="switchShopTab('ships')">OUTRAS NAVES</button></div>
+<div id="equipmentView" class="storeView show"><div class="arsenalContent"><div class="arsenalList" id="equipmentList"></div>
+<div class="arsenalShip"><div class="shipPulse"></div><div class="slot motor">MOTOR</div><div class="slot weapon">ARMA</div><div class="slot core">NÚCLEO</div><div class="slot shield">ESCUDO</div><div class="slot armor">BLINDAGEM</div><div class="slot aim">MIRA</div><div class="ship"><div class="shipCore"></div><div class="wing wl"></div><div class="wing wr"></div><div class="cockpit"></div><div class="engine el"></div><div class="engine er"></div><div class="detailLine dl"></div><div class="detailLine dr"></div><div class="light navL"></div><div class="light navR"></div><div class="antenna"></div><div class="missile l"></div><div class="missile r"></div></div></div>
+<div class="arsenalDetail" id="equipmentDetail"><div class="detailTop"><div><h2>Selecione um equipamento</h2><small>Compre e equipe peças para alterar a NOVA FALCON.</small></div></div></div></div></div>
+<div id="shipsView" class="storeView"><div class="shipStore" id="shipStore"></div></div></div>
+
+<div id="profile" class="overlay"><div class="overlayHead"><h1>PERFIL DO PILOTO</h1><button class="close" onclick="closePanels()">×</button></div>
+<div class="profilePanel"><div><div class="profileHero"><button type="button" class="profileAvatar" id="profileAvatar" onclick="openProfileCustom()" title="Personalizar perfil"><span id="profileLogo">✦</span></button><div><div class="profileName" id="profileName">PILOTO ALMEIDA</div><div class="profileSub">NÍVEL <span id="profileLevel">1</span> • <span id="profilePhases">0</span> FASES CONCLUÍDAS</div><div class="profileActions"><button onclick="renameProfile()">MUDAR NOME • 1.000 ★</button><button onclick="openProfileCustom()">MOLDURA / LOGO</button></div></div></div><div class="card" style="margin-top:12px"><h2>ESTATÍSTICAS</h2><p>Inimigos derrotados: <b id="statKills">0</b></p><p>Pontuação total: <b id="statScore">0</b></p><p>Conquistas: <b id="statAchievements">0</b>/12</p><p>Fases: <b id="statPhaseCount">0</b>/900</p></div></div><div><div class="card"><h2>CONQUISTAS</h2><div class="achievementGrid" id="achievementGrid"></div></div><div class="card profileRewards" style="margin-top:12px"><h2>RECOMPENSAS</h2><p class="rewardIntro">Complete marcos do jogo e resgate recompensas de vários tipos.</p><div id="profileRewardsGrid" class="rewardGrid"></div></div></div></div></div>
+
+<div id="phases" class="overlay"><div class="overlayHead"><h1>SELEÇÃO DE FASES</h1><button class="close" onclick="closePanels()">×</button></div><div class="phaseToolbar"><div><b>900 FASES</b><span id="phaseProgressText">0/900 concluídas</span></div><div class="phaseFilters" id="phaseFilters"><button class="active" onclick="setPhaseFilter('all')">TODAS</button><button onclick="setPhaseFilter('FÁCIL')">FÁCIL</button><button onclick="setPhaseFilter('MÉDIO')">MÉDIO</button><button onclick="setPhaseFilter('DIFÍCIL')">DIFÍCIL</button><button onclick="setPhaseFilter('HARD')">HARD</button><button onclick="setPhaseFilter('EXTREMO')">EXTREMO</button><button onclick="setPhaseFilter('LENDÁRIO')">LENDÁRIO</button></div></div><div class="phaseGrid" id="phaseGrid"></div><div class="phasePager"><button type="button" onclick="phasePage(-1)">‹ ANTERIOR</button><span id="phasePageLabel">1 / 30</span><button type="button" onclick="phasePage(1)">PRÓXIMA ›</button></div></div>
+<div id="profileCustomModal" class="renameModal" aria-hidden="true"><div class="customBox"><div class="phaseTag">SKY RAIDERS // PERSONALIZAÇÃO</div><h2>EMBLEMA DO PILOTO</h2><p>Compre molduras e logos e escolha os que ficam no seu perfil.</p><div class="customPreview"><div class="profileAvatar previewAvatar" id="customPreview"><span id="customPreviewLogo">✦</span></div><div><b id="customCostHint">Personalize seu perfil</b><small>As compras ficam salvas no jogo.</small></div></div><h3>MOLDURAS</h3><div id="frameShop" class="customGrid"></div><h3>LOGOS</h3><div id="logoShop" class="customGrid"></div><div class="renameActions"><button type="button" onclick="closeProfileCustom()">FECHAR</button></div></div></div>
+<div id="renameModal" class="renameModal" aria-hidden="true"><div class="renameBox"><div class="phaseTag">SKY RAIDERS // PERFIL</div><h2>NOVO NOME DO PILOTO</h2><p>Escolha um nome para seu perfil. Custo: <b>1.000 ★</b></p><input id="renameInput" maxlength="18" autocomplete="off" spellcheck="false" placeholder="Digite seu nome"><div class="renameActions"><button type="button" onclick="closeRename()">CANCELAR</button><button type="button" class="primary" onclick="confirmRename()">CONFIRMAR • 1.000 ★</button></div></div></div>
+
+<div id="missions" class="overlay"><div class="overlayHead"><h1>MISSÕES</h1><button class="close" onclick="closePanels()">×</button></div>
+<div class="content"><div class="card"><h2>PRIMEIRO ATAQUE</h2><p>Derrote 10 inimigos. Progresso: <span id="m1">0</span>/10</p><button onclick="claimMission(1)">RECOMPENSA 300 ★</button></div><div class="card"><h2>AVIADOR</h2><p>Jogue 3 fases.</p><button onclick="claimMission(2)">RECOMPENSA 1 ◆</button></div><div class="card"><h2>SOBREVIVENTE</h2><p>Complete uma fase sem perder a nave.</p><button onclick="claimMission(3)">RECOMPENSA 500 ★</button></div></div></div>
+
+<div id="upgrades" class="overlay"><div class="overlayHead"><h1>UPGRADES</h1><button class="close" onclick="closePanels()">×</button></div>
+<div class="content"><div class="card"><h2>CANHÃO • NÍVEL <span id="gunLv">1</span></h2><p>Aumenta o dano dos disparos.</p><button onclick="upgrade('gun')">MELHORAR • 500 ★</button></div><div class="card"><h2>BLINDAGEM • NÍVEL <span id="armorLv">1</span></h2><p>Aumenta a resistência.</p><button onclick="upgrade('armor')">MELHORAR • 500 ★</button></div><div class="card"><h2>MOTOR • NÍVEL <span id="engineLv">1</span></h2><p>Aumenta a velocidade da nave.</p><button onclick="upgrade('engine')">MELHORAR • 500 ★</button></div></div></div>
+
+<div id="event" class="overlay"><div class="overlayHead"><h1>OPERAÇÃO: CÉU EM CHAMAS</h1><button class="close" onclick="closePanels()">×</button></div>
+<div class="content"><div class="card"><h2>FASE ESPECIAL</h2><p>Uma sequência de esquadrões invade o setor. Sobreviva e destrua o máximo possível.</p><button onclick="closePanels();startGame(true)">INICIAR EVENTO</button></div><div class="card"><h2>RECOMPENSA</h2><p>Peças raras, XP e moedas por pontuação.</p></div></div></div>
+
+<div id="leaderboard" class="overlay"><div class="overlayHead"><h1>RANKING</h1><button class="close" onclick="closePanels()">×</button></div>
+<div class="content"><div class="card"><h2>01 • SKY MASTER</h2><p>12.840 pontos</p></div><div class="card"><h2>02 • FALCON X</h2><p>11.720 pontos</p></div><div class="card"><h2>03 • ALMEIDA</h2><p id="rankScore">8.240 pontos</p></div></div></div>
+
+
+<div id="aircraftLab" class="overlay"><div class="overlayHead"><h1>OFICINA DE AERONAVES</h1><button class="close" onclick="closePanels()">×</button></div>
+<div class="content">
+  <div class="card"><h2>✦ NOVA FALCON</h2><p>Caça multifunção. Equilíbrio entre velocidade, blindagem e poder de fogo.</p><button onclick="setAircraft('falcon')">EQUIPAR</button></div>
+  <div class="card"><h2>⚡ THUNDER</h2><p>Interceptor rápido com motores duplos. Desbloqueio: nível 18.</p><button onclick="setAircraft('thunder')">PRÉ-VISUALIZAR</button></div>
+  <div class="card"><h2>◆ VIPER</h2><p>Aeronave pesada com asas reforçadas e canhão de alta potência.</p><button onclick="setAircraft('viper')">PRÉ-VISUALIZAR</button></div>
+</div></div>
+
+<div id="multiplayer" class="overlay"><div class="overlayHead"><h1>MULTIPLAYER ONLINE</h1><button class="close" onclick="closeMultiplayer()">×</button></div>
+<div class="mpWrap">
+  <div class="card mpHero"><div class="mpStatusDot" id="mpStatusDot"></div><div><h2>🌐 SKY RAIDERS ONLINE</h2><p id="mpStatus">Conectando ao servidor...</p></div></div>
+  <div class="mpGrid">
+    <div class="card"><h2>CRIAR SALA</h2><p>Crie uma sala e compartilhe o código com seus amigos.</p><input id="mpRoomName" maxlength="16" placeholder="Nome da sala"><button onclick="createRoom()">CRIAR SALA</button><div class="roomCode" id="mpCreatedCode">—</div></div>
+    <div class="card"><h2>ENTRAR EM SALA</h2><p>Digite o código da sala do seu amigo.</p><input id="mpJoinCode" maxlength="8" placeholder="CÓDIGO"><button onclick="joinRoom()">ENTRAR</button></div>
+  </div>
+  <div class="card mpLobby"><h2>JOGADORES ONLINE</h2><div id="mpPlayers"><div class="mpPlayer"><span class="onlineDot"></span>PILOTO LOCAL <b>VOCÊ</b></div></div><button class="primary" id="mpReadyBtn" onclick="toggleReady()">PRONTO</button><button onclick="leaveRoom()">SAIR DA SALA</button></div>
+  <div class="mpNote">Modo online requer o servidor multiplayer do Sky Raiders. A interface já está preparada para conexão WebSocket.</div>
+</div></div>
+
+<div id="settings" class="overlay"><div class="overlayHead"><h1>CONFIGURAÇÕES</h1><button class="close" onclick="closePanels()">×</button></div>
+<div class="content"><div class="card"><h2>ÁUDIO</h2><p>Som do jogo</p><button onclick="showToast('Som alternado')">ATIVAR / DESATIVAR</button></div><div class="card"><h2>CONTROLES</h2><p>Use WASD, setas ou os botões na tela. A nave dispara automaticamente.</p></div><div class="card"><h2>IDIOMA</h2><p>Português (Brasil)</p></div></div></div>
+
+<div id="toast"></div>
+<div id="phaseTransition"><div class="phaseCore"><div class="phaseTag">SKY RAIDERS // OPERAÇÃO</div><h1 id="transitionPhase">FASE 01</h1><h2 id="transitionName">PRIMEIRO CONTATO</h2><p id="transitionDesc">Preparando rota de combate...</p><div class="phaseLines"></div><div class="phaseCountdown" id="transitionCountdown">INICIALIZANDO SISTEMAS</div></div></div>
+<div id="phaseEnd"><div class="phaseEndBox"><div class="phaseTag">MISSÃO CONCLUÍDA</div><h1 id="phaseEndTitle">FASE 01</h1><p id="phaseEndDesc">Setor neutralizado.</p><div class="rewardBig" id="phaseEndReward">+350 ★</div><p id="phaseEndStats">Pontuação: 0 • Inimigos: 0</p><div class="phaseEndActions"><button id="nextPhaseBtn" onclick="nextPhase()">PRÓXIMA FASE</button><button class="secondary" onclick="closePhaseEnd()">VOLTAR AO HANGAR</button></div></div></div>
+</div>
+
+<div id="game">
+<canvas id="gameCanvas"></canvas>
+<div id="gameScene">
+  <div id="gamePlayer" class="ship gameShip falcon">
+    <div class="shipCore"></div><div class="wing wl"></div><div class="wing wr"></div>
+    <div class="cockpit"></div><div class="engine el"></div><div class="engine er"></div>
+    <div class="detailLine dl"></div><div class="detailLine dr"></div>
+    <div class="light navL"></div><div class="light navR"></div>
+    <div class="antenna"></div><div class="missile l"></div><div class="missile r"></div>
+  </div>
+  <div id="gameEnemies"></div>
+</div>
+<div class="gameHud">
+  <div class="hudBox hpHud">♥ <span id="hp">100</span></div>
+  <div class="hudBox scoreHud">★ <span id="score">0</span></div>
+  <div class="hudBox waveHud">◆ <span id="wave">1</span></div>
+  <div class="hudBox comboHudClean" id="comboHud">×1</div>
+</div>
+<button class="gamePauseBtn" id="pauseButton" type="button" aria-label="Pausar">Ⅱ</button>
+<div class="bossHud" id="bossHud">
+  <div class="bossName">⚠ CHEFE</div>
+  <div class="bossBar"><i id="bossBarFill"></i></div>
+</div>
+<div class="waveBanner" id="waveBanner"><b id="waveTitle">ONDA 1</b><small id="waveText">Prepare-se</small></div>
+<div class="joystick" id="joystick"><div class="stick" id="stick"></div></div>
+<button class="dashBtn" id="dashBtn" type="button" aria-label="Impulso">⚡</button>
+<button class="fireBtn" id="fireBtn" type="button">TIRO</button>
+<div id="pauseOverlay">
+  <div class="pauseBox">
+    <h1>JOGO PAUSADO</h1>
+    <p>O combate está congelado.</p>
+    <div class="pauseActions">
+      <button class="primary" data-pause-action="continue" type="button">CONTINUAR</button>
+      <button data-pause-action="restart" type="button">REINICIAR FASE</button>
+      <button data-pause-action="sound" type="button">🔊 SOM: <span id="pauseSound">ON</span></button>
+      <button class="danger" data-pause-action="menu" type="button">VOLTAR AO MENU</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>window.SKY_RAIDERS_SERVER = window.SKY_RAIDERS_SERVER || 'wss://SEU-SERVIDOR.onrender.com';</script>
+<script>
+const panels=['hangar','fleet','shop','missions','upgrades','event','leaderboard','settings','aircraftLab','profile','phases','multiplayer'];
+const SAVE_KEY='skyRaidersV7Save';
+let coins=10000,gems=1000,gunLv=1,armorLv=1,engineLv=1,missionKills=0;
+let profileName='PILOTO ALMEIDA', totalScore=0, completedPhases=new Set(), selectedPhase=1, achievements=new Set();
+let ownedFrames=new Set(['frame_default']), ownedLogos=new Set(['logo_star']), equippedFrame='frame_default', equippedLogo='logo_star', claimedRewards=new Set();
+let selectedEquipment='plasmaCannonS';
+const EQUIPMENT={
+ plasmaCannonS:{name:'Canhão Plasma S',cat:'weapon',visual:'cannon',rar:'S',price:8500,desc:'Canhão experimental de alta energia. Aumenta dano e cadência.',stats:{damage:30,fireRate:10}},
+ ionDriveS:{name:'Motor Ion-X S',cat:'motor',visual:'engine',rar:'S',price:7200,desc:'Propulsor de alto desempenho para aceleração e impulso.',stats:{speed:20,accel:18,dash:25}},
+ aegisShieldA:{name:'Escudo Aegis A',cat:'shield',visual:'shield',rar:'A',price:4300,desc:'Campo defensivo que amplia a proteção e a duração do escudo.',stats:{shield:35,shieldTime:25}},
+ titanArmorA:{name:'Blindagem Titânio A',cat:'armor',visual:'armor',rar:'A',price:3900,desc:'Placas reforçadas que aumentam a vida máxima da nave.',stats:{hp:25,resist:12}},
+ plasmaCoreB:{name:'Núcleo Plasma B',cat:'core',visual:'core',rar:'B',price:2600,desc:'Núcleo energético que melhora a energia e a recuperação.',stats:{energy:20,cooldown:12}},
+ targetComputerA:{name:'Mira Vector A',cat:'aim',visual:'aim',rar:'A',price:4600,desc:'Computador de mira que amplia alcance e chance de crítico.',stats:{range:18,crit:12}},
+ ionBlasterB:{name:'Blaster Iônico B',cat:'weapon',visual:'cannon',rar:'B',price:3100,desc:'Arma de disparo rápido com núcleo azul.',stats:{damage:16,fireRate:16}},
+ titanDriveA:{name:'Motor Titã A',cat:'motor',visual:'engine',rar:'A',price:4800,desc:'Motor pesado com grande aceleração.',stats:{speed:13,accel:30,dash:12}},
+ barrierC:{name:'Barreira Mk-I C',cat:'shield',visual:'shield',rar:'C',price:1500,desc:'Gerador defensivo básico para missões iniciais.',stats:{shield:15,shieldTime:10}},
+ reactiveArmorB:{name:'Armadura Reativa B',cat:'armor',visual:'armor',rar:'B',price:2900,desc:'Blindagem que dispersa parte do impacto.',stats:{hp:16,resist:18}},
+ quantumCoreA:{name:'Núcleo Quântico A',cat:'core',visual:'core',rar:'A',price:5200,desc:'Reator avançado com recuperação de sistemas.',stats:{energy:35,cooldown:20}},
+ hunterAimS:{name:'Mira Hunter S',cat:'aim',visual:'aim',rar:'S',price:6800,desc:'Sistema de aquisição de alvo de elite.',stats:{range:28,crit:22}},
+ siegeCannonA:{name:'Canhão Cerco A',cat:'weapon',visual:'cannon',rar:'A',price:6100,desc:'Canhão pesado para dano elevado contra alvos resistentes.',stats:{damage:42,fireRate:-5}},
+ overdriveS:{name:'Overdrive S',cat:'motor',visual:'engine',rar:'S',price:7900,desc:'Propulsão experimental de máxima velocidade.',stats:{speed:32,accel:22,dash:35}},
+ aegisPrimeS:{name:'Aegis Prime S',cat:'shield',visual:'shield',rar:'S',price:8200,desc:'Escudo de elite com duração prolongada.',stats:{shield:55,shieldTime:45}},
+ nanofiberS:{name:'Nanofibra S',cat:'armor',visual:'armor',rar:'S',price:7600,desc:'Revestimento inteligente de altíssima resistência.',stats:{hp:45,resist:25}}
+};
+function itemTexture(type,rar){
+ const accent={C:'#a9bdcf',B:'#49d6ff',A:'#ffb83e',S:'#c66cff'}[rar]||'#63dfff';
+ const common=`<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1220"/><stop offset=".5" stop-color="#182b42"/><stop offset="1" stop-color="#07101c"/></linearGradient><linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dbe7ee"/><stop offset=".45" stop-color="#657b8e"/><stop offset="1" stop-color="#1b2835"/></linearGradient><radialGradient id="glow"><stop stop-color="${accent}" stop-opacity=".85"/><stop offset="1" stop-color="${accent}" stop-opacity="0"/></radialGradient><pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M8 0H0V8" fill="none" stroke="${accent}" stroke-opacity=".11"/></pattern></defs><rect width="100" height="100" rx="14" fill="url(#bg)"/><rect x="4" y="4" width="92" height="92" rx="11" fill="url(#grid)"/><circle cx="50" cy="50" r="39" fill="url(#glow)"/>`;
+ let art='';
+ if(type==='cannon') art=`<g transform="translate(15 18) rotate(-8 35 32)"><rect x="10" y="27" width="57" height="17" rx="6" fill="url(#metal)" stroke="${accent}" stroke-width="2"/><rect x="21" y="20" width="35" height="9" rx="3" fill="#26394a" stroke="#91a8b8"/><path d="M57 29h18l7 7-7 7H57z" fill="#d9e7ed"/><circle cx="73" cy="36" r="4" fill="${accent}"/><path d="M14 45l-7 14h13l8-14" fill="#334b5e"/><path d="M29 26v-9M38 26v-13M47 26v-9" stroke="${accent}" stroke-width="3" stroke-linecap="round"/></g>`;
+ if(type==='engine') art=`<g transform="translate(16 12)"><ellipse cx="34" cy="38" rx="25" ry="31" fill="#273b4d" stroke="${accent}" stroke-width="2"/><ellipse cx="34" cy="38" rx="15" ry="22" fill="#101c2a" stroke="#9db3c2"/><ellipse cx="34" cy="38" rx="9" ry="16" fill="${accent}" opacity=".8"/><path d="M18 10l-8 10M50 10l8 10M18 66l-8 10M50 66l8 10" stroke="#9db3c2" stroke-width="6" stroke-linecap="round"/><path d="M34 17v42" stroke="#fff" stroke-opacity=".45" stroke-width="2"/></g>`;
+ if(type==='shield') art=`<g transform="translate(14 10)"><path d="M36 5l30 11v27c0 18-12 30-30 40C18 73 6 61 6 43V16z" fill="#1a3147" stroke="${accent}" stroke-width="3"/><path d="M36 13l22 8v21c0 14-8 24-22 32C22 66 14 56 14 42V21z" fill="none" stroke="#8de9ff" stroke-opacity=".55" stroke-width="2"/><circle cx="36" cy="41" r="16" fill="url(#glow)"/><path d="M36 25v32M20 41h32" stroke="${accent}" stroke-width="2" opacity=".8"/></g>`;
+ if(type==='armor') art=`<g transform="translate(11 9)"><path d="M20 9h30l17 17v28L50 71H20L3 54V26z" fill="url(#metal)" stroke="${accent}" stroke-width="2"/><path d="M20 17h30l9 9v18l-9 9H20l-9-9V26z" fill="#243746" stroke="#9db3c2"/><path d="M24 22h22v34H24z" fill="#415b6d"/><path d="M29 27h12v24H29z" fill="#1a2b39"/><path d="M8 31h9M47 31h14M8 47h9M47 47h14" stroke="${accent}" stroke-width="3"/></g>`;
+ if(type==='core') art=`<g transform="translate(15 10)"><path d="M35 3l29 17v34L35 71 6 54V20z" fill="#203b50" stroke="${accent}" stroke-width="2"/><path d="M35 14l18 10v22L35 57 17 46V24z" fill="#0c1825" stroke="#8ee9ff" stroke-width="2"/><circle cx="35" cy="35" r="13" fill="url(#glow)"/><path d="M35 22v26M22 35h26" stroke="${accent}" stroke-width="3"/></g>`;
+ if(type==='aim') art=`<g transform="translate(10 10)"><rect x="5" y="7" width="70" height="58" rx="10" fill="#162b3c" stroke="${accent}" stroke-width="2"/><circle cx="40" cy="36" r="22" fill="#09131f" stroke="#9eb7c7" stroke-width="2"/><circle cx="40" cy="36" r="13" fill="none" stroke="${accent}" stroke-width="3"/><circle cx="40" cy="36" r="4" fill="${accent}"/><path d="M40 11v14M40 47v14M15 36h14M51 36h14" stroke="${accent}" stroke-width="2"/></g>`;
+ return `<svg class="itemSVG" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">${common}${art}<rect x="5" y="5" width="90" height="90" rx="11" fill="none" stroke="${accent}" stroke-opacity=".65"/></svg>`;
+}
+
+const SHIPS={
+ falcon:{id:'falcon',name:'NOVA FALCON',price:0,rar:'A',desc:'Caça multifunção equilibrado.',atk:82,def:68,spd:91,owned:true,bonus:{damage:1,speed:1,hp:0}},
+ thunder:{id:'thunder',name:'THUNDER',price:12000,rar:'S',desc:'Interceptor de alta velocidade com motores duplos.',atk:92,def:58,spd:125,req:'Nível 18',bonus:{damage:1.12,speed:1.22,hp:-8}},
+ viper:{id:'viper',name:'VIPER',price:15000,rar:'S',desc:'Aeronave pesada com blindagem e canhão reforçados.',atk:118,def:105,spd:72,req:'Complete 15 missões',bonus:{damage:1.28,speed:.86,hp:35}},
+ phantom:{id:'phantom',name:'PHANTOM',price:18500,rar:'S',desc:'Caça furtivo com mira avançada e manobrabilidade.',atk:101,def:74,spd:116,req:'30.000 pontos',bonus:{damage:1.08,speed:1.15,hp:5}},
+ titan:{id:'titan',name:'TITAN-X',price:24000,rar:'S',desc:'Nave de assalto com casco pesado.',atk:135,def:138,spd:58,req:'50.000 pontos',bonus:{damage:1.38,speed:.74,hp:65}}
+};
+let ownedShips=new Set(['falcon']),selectedShip='falcon';
+let bought=new Set();
+let equipped={motor:null,weapon:null,shield:null,armor:null,core:null,aim:null};
+let bossesDefeated=0,survivorPhases=0;
+
+// MULTIPLAYER ONLINE
+let mpSocket=null, mpRoom=null, mpReady=false;
+const MP_SERVER=(window.SKY_RAIDERS_SERVER||'').trim();
+function setMpStatus(text,online=false){const el=document.getElementById('mpStatus');const dot=document.getElementById('mpStatusDot');if(el)el.textContent=text;if(dot)dot.classList.toggle('online',online)}
+function openMultiplayer(){openPanel('multiplayer');connectMultiplayer()}
+function closeMultiplayer(){leaveRoom();closePanels()}
+function connectMultiplayer(){
+  if(mpSocket&&mpSocket.readyState===1){setMpStatus('Servidor conectado',true);return;}
+  if(!MP_SERVER){setMpStatus('Modo online aguardando o servidor multiplayer.');return;}
+  try{mpSocket=new WebSocket(MP_SERVER);
+    mpSocket.onopen=()=>setMpStatus('Servidor conectado • pronto para jogar',true);
+    mpSocket.onmessage=e=>handleMpMessage(e.data);
+    mpSocket.onerror=()=>setMpStatus('Não foi possível conectar ao servidor.');
+    mpSocket.onclose=()=>setMpStatus('Servidor desconectado.');
+  }catch(e){setMpStatus('Falha na conexão.')}
+}
+function sendMp(data){if(mpSocket&&mpSocket.readyState===1)mpSocket.send(JSON.stringify(data));}
+function createRoom(){const name=(document.getElementById('mpRoomName').value||'SALA SKY').trim().slice(0,16);if(!MP_SERVER){const code=Math.random().toString(36).slice(2,8).toUpperCase();mpRoom=code;document.getElementById('mpCreatedCode').textContent=code;setMpStatus('Sala criada localmente. Conecte o servidor para jogar online.');return;}sendMp({type:'create_room',name});}
+function joinRoom(){const code=(document.getElementById('mpJoinCode').value||'').trim().toUpperCase();if(!code)return showToast('Digite o código da sala');mpRoom=code;if(MP_SERVER)sendMp({type:'join_room',room:code});else setMpStatus('Código recebido. Servidor multiplayer necessário para entrar online.');}
+function toggleReady(){mpReady=!mpReady;document.getElementById('mpReadyBtn').textContent=mpReady?'PRONTO ✓':'PRONTO';sendMp({type:'ready',room:mpRoom,ready:mpReady});}
+function leaveRoom(){if(mpRoom)sendMp({type:'leave_room',room:mpRoom});mpRoom=null;mpReady=false;const c=document.getElementById('mpCreatedCode');if(c)c.textContent='—';}
+function handleMpMessage(raw){let m;try{m=JSON.parse(raw)}catch{return;}if(m.type==='room_created'){mpRoom=m.room;document.getElementById('mpCreatedCode').textContent=m.room;setMpStatus('Sala criada • aguardando jogadores',true)}if(m.type==='room_joined'){mpRoom=m.room;setMpStatus('Você entrou na sala',true)}if(m.type==='players'){const box=document.getElementById('mpPlayers');if(!box)return;box.innerHTML=m.players.map(p=>`<div class="mpPlayer"><span class="onlineDot"></span>${p.name||'PILOTO'} <b>${p.ready?'PRONTO':'AGUARDANDO'}</b></div>`).join('')}if(m.type==='match_start'){setMpStatus('Partida iniciada!',true);closePanels();startGame(false)}}
+function loadSave(){try{const d=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');if(d){coins=Number(d.coins??coins);gems=Number(d.gems??gems);gunLv=Number(d.gunLv??1);armorLv=Number(d.armorLv??1);engineLv=Number(d.engineLv??1);missionKills=Number(d.missionKills??0);bought=new Set(d.bought||[]);equipped=Object.assign(equipped,d.equipped||{});ownedShips=new Set(d.ownedShips||['falcon']);selectedShip=d.selectedShip||'falcon';profileName=d.profileName||'PILOTO ALMEIDA';totalScore=Number(d.totalScore??0);completedPhases=new Set(d.completedPhases||[]);selectedPhase=Math.max(1,Math.min(900,Number(d.selectedPhase||1)));achievements=new Set(d.achievements||[]);bossesDefeated=Number(d.bossesDefeated??0);survivorPhases=Number(d.survivorPhases??0);ownedFrames=new Set(d.ownedFrames||['frame_default']);ownedLogos=new Set(d.ownedLogos||['logo_star']);equippedFrame=d.equippedFrame||'frame_default';equippedLogo=d.equippedLogo||'logo_star';claimedRewards=new Set(d.claimedRewards||[]);}}catch(e){console.warn('Save load failed',e)}}
+function saveGame(){localStorage.setItem(SAVE_KEY,JSON.stringify({coins,gems,gunLv,armorLv,engineLv,missionKills,bought:[...bought],equipped,ownedShips:[...ownedShips],selectedShip,profileName,totalScore,completedPhases:[...completedPhases],selectedPhase,achievements:[...achievements],bossesDefeated,survivorPhases,ownedFrames:[...ownedFrames],ownedLogos:[...ownedLogos],equippedFrame,equippedLogo,claimedRewards:[...claimedRewards]}))}
+function openPanel(id){panels.forEach(p=>document.getElementById(p)?.classList.remove('show'));document.getElementById(id)?.classList.add('show');if(id==='shop'){renderArsenal();renderShips();switchShopTab('equipment')}if(id==='profile')renderProfile();if(id==='phases')renderPhases()}
+function closePanels(){panels.forEach(p=>document.getElementById(p)?.classList.remove('show'))}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('toastShow');clearTimeout(window.tt);window.tt=setTimeout(()=>t.classList.remove('toastShow'),1800)}
+function render(){document.getElementById('coins').textContent=coins;document.getElementById('gems').textContent=gems;document.getElementById('gunLv').textContent=gunLv;document.getElementById('armorLv').textContent=armorLv;document.getElementById('engineLv').textContent=engineLv;document.getElementById('m1').textContent=Math.min(10,missionKills);document.getElementById('arsenalCoins').textContent=coins;if(document.getElementById('selectedPhaseLabel'))document.getElementById('selectedPhaseLabel').textContent=String(selectedPhase).padStart(2,'0');document.querySelector('.profile .name').textContent=profileName;if(document.getElementById('profileName'))document.getElementById('profileName').textContent=profileName;}
+const PHASE_NAMES=['PRIMEIRO CONTATO','CORREDOR DE NEBULOSA','CÉU FRAGMENTADO','MARCHA DOS DRONES','NÚCLEO HOSTIL','TEMPESTADE IÔNICA','LINHA DE CERCO','SOMBRA ORBITAL','PORTÃO DE FERRO','QUEDA DO TITÃ','VÉRTICE AZUL','CIDADE DE AÇO','ECLIPSE','RUPTURA','FRONTEIRA ZERO','DOMÍNIO SOMBRIO','GUERRA DE SATÉLITES','OLHO DO VAZIO','ÚLTIMO SETOR','ASCENSÃO SKY RAIDERS'];
+const DIFFICULTIES=[
+ {name:'FÁCIL',min:1,max:150,mult:.82,reward:300},
+ {name:'MÉDIO',min:151,max:300,mult:1,reward:380},
+ {name:'DIFÍCIL',min:301,max:450,mult:1.22,reward:470},
+ {name:'HARD',min:451,max:600,mult:1.48,reward:580},
+ {name:'EXTREMO',min:601,max:750,mult:1.8,reward:700},
+ {name:'LENDÁRIO',min:751,max:900,mult:2.15,reward:850}
+];
+function getDifficulty(id){return DIFFICULTIES.find(d=>id>=d.min&&id<=d.max)||DIFFICULTIES[0]}
+const PHASES=Array.from({length:900},(_,i)=>{const id=i+1,d=getDifficulty(id),sector=Math.ceil(id/20),name=PHASE_NAMES[i%PHASE_NAMES.length];return {id,name:`${name} ${String(id).padStart(3,'0')}`,desc:`Setor ${String(sector).padStart(2,'0')} • 3 ondas + chefe • ${d.name}`,difficulty:d.name,mult:d.mult,reward:Math.round(d.reward+id*.55)}});
+let phaseFilter='all',phasePageIndex=0;
+function filteredPhases(){return phaseFilter==='all'?PHASES:PHASES.filter(p=>p.difficulty===phaseFilter)}
+function renderPhases(){const box=document.getElementById('phaseGrid');if(!box)return;const list=filteredPhases(),pages=Math.max(1,Math.ceil(list.length/30));phasePageIndex=Math.max(0,Math.min(phasePageIndex,pages-1));const slice=list.slice(phasePageIndex*30,phasePageIndex*30+30);box.innerHTML=slice.map(ph=>{const done=completedPhases.has(ph.id),locked=ph.id>1&&!completedPhases.has(ph.id-1),sel=selectedPhase===ph.id;return `<div class="phaseCard ${done?'done':''} ${locked?'locked':''} ${sel?'selected':''} diff-${ph.difficulty.toLowerCase().replace('é','e').replace('á','a')}" data-difficulty="${ph.difficulty}"><div class="phaseNum">${String(ph.id).padStart(3,'0')}</div><span class="phaseDiff">${ph.difficulty}</span><span class="phaseReward">+${ph.reward} ★</span><h3>${ph.name}</h3><p>${ph.desc}</p><button ${locked?'disabled':''} onclick="selectPhase(${ph.id})">${done?'JOGAR NOVAMENTE':locked?'BLOQUEADA':sel?'SELECIONADA':'SELECIONAR'}</button></div>`}).join('');document.getElementById('phasePageLabel').textContent=`${phasePageIndex+1} / ${pages}`;document.getElementById('phaseProgressText').textContent=`${completedPhases.size}/900 concluídas`}
+function setPhaseFilter(filter){phaseFilter=filter;phasePageIndex=0;document.querySelectorAll('#phaseFilters button').forEach(b=>b.classList.toggle('active',b.textContent===filter||(filter==='all'&&b.textContent==='TODAS')));renderPhases()}
+function phasePage(delta){phasePageIndex+=delta;renderPhases()}
+function selectPhase(id){if(id>1&&!completedPhases.has(id-1))return showToast('Conclua a fase anterior primeiro');selectedPhase=Math.max(1,Math.min(900,id));saveGame();render();renderPhases();showToast('Fase '+String(id).padStart(3,'0')+' selecionada')}
+const ACHIEVEMENTS=[['first','🚀','Primeiro voo','Conclua sua primeira fase',()=>completedPhases.size>=1],['hunter','🎯','Caçador','Derrote 50 inimigos',()=>missionKills>=50],['veteran','⭐','Veterano','Conclua 5 fases',()=>completedPhases.size>=5],['elite','🏆','Elite','Conclua 10 fases',()=>completedPhases.size>=10],['legend','👑','Lenda','Conclua as 30 fases',()=>completedPhases.size>=900],['boss','☠','Quebra-chefes','Derrote um chefe',()=>bossesDefeated>=1],['score','💫','Pontuação astral','Alcance 50.000 pontos',()=>totalScore>=50000],['collector','📦','Colecionador','Compre 5 equipamentos',()=>bought.size>=5],['arsenal','🔧','Arsenal completo','Equipe pelo menos 1 item S',()=>Object.values(equipped).some(id=>id&&EQUIPMENT[id]?.rar==='S')],['fleet','✈','Comandante','Tenha 3 naves',()=>ownedShips.size>=3],['survivor','🛡','Sobrevivente','Conclua uma fase sem ser destruído',()=>survivorPhases>=1],['master','🌌','Mestre dos setores','Conclua 250 fases',()=>completedPhases.size>=25]];
+function checkAchievements(){let changed=false;ACHIEVEMENTS.forEach(a=>{if(!achievements.has(a[0])&&a[4]()){achievements.add(a[0]);coins+=100;showToast('CONQUISTA: '+a[2]+' • +100 ★');changed=true}});if(changed){saveGame();render()}}
+const PROFILE_FRAMES=[
+{id:'frame_default',name:'Padrão',price:0,icon:'✦',cls:'',desc:'Moldura original'},
+{id:'frame_gold',name:'Ouro Solar',price:1800,icon:'★',cls:'frame-gold',desc:'Moldura dourada'},
+{id:'frame_purple',name:'Nebulosa',price:2400,icon:'✦',cls:'frame-purple',desc:'Energia violeta'},
+{id:'frame_red',name:'Alerta Rubro',price:2200,icon:'◆',cls:'frame-red',desc:'Moldura de combate'},
+{id:'frame_green',name:'Éden',price:2100,icon:'✦',cls:'frame-green',desc:'Energia verde'},
+{id:'frame_rainbow',name:'Aurora',price:4800,icon:'✧',cls:'frame-rainbow',desc:'Moldura lendária'}
+];
+const PROFILE_LOGOS=[
+{id:'logo_star',name:'Estrela',price:0,icon:'✦'},
+{id:'logo_skull',name:'Caveira',price:900,icon:'☠'},
+{id:'logo_target',name:'Mira',price:1200,icon:'◎'},
+{id:'logo_wing',name:'Asas',price:1500,icon:'♢'},
+{id:'logo_comet',name:'Cometa',price:1800,icon:'☄'},
+{id:'logo_crown',name:'Coroa',price:2500,icon:'♛'},
+{id:'logo_planet',name:'Planeta',price:2800,icon:'◉'},
+{id:'logo_lightning',name:'Raio',price:3200,icon:'ϟ'}
+];
+const PROFILE_REWARDS=[
+{id:'r1',title:'Primeiro voo',need:'Conclua 1 fase',ok:()=>completedPhases.size>=1,reward:'500 ★',give:()=>coins+=500},
+{id:'r2',title:'Piloto veterano',need:'Conclua 5 fases',ok:()=>completedPhases.size>=5,reward:'1.200 ★',give:()=>coins+=1200},
+{id:'r3',title:'Caçador',need:'Derrote 100 inimigos',ok:()=>missionKills>=100,reward:'800 ★ + 100 💎',give:()=>{coins+=800;gems+=100}},
+{id:'r4',title:'Setor 10',need:'Conclua 10 fases',ok:()=>completedPhases.size>=10,reward:'Moldura Ouro Solar',give:()=>ownedFrames.add('frame_gold')},
+{id:'r5',title:'Setor 25',need:'Conclua 25 fases',ok:()=>completedPhases.size>=25,reward:'Logo Cometa',give:()=>ownedLogos.add('logo_comet')},
+{id:'r6',title:'Setor 50',need:'Conclua 50 fases',ok:()=>completedPhases.size>=50,reward:'2.500 ★',give:()=>coins+=2500},
+{id:'r7',title:'Setor 100',need:'Conclua 100 fases',ok:()=>completedPhases.size>=100,reward:'Moldura Nebulosa',give:()=>ownedFrames.add('frame_purple')},
+{id:'r8',title:'Setor 250',need:'Conclua 250 fases',ok:()=>completedPhases.size>=250,reward:'3.500 ★ + 250 💎',give:()=>{coins+=3500;gems+=250}},
+{id:'r9',title:'Setor 500',need:'Conclua 500 fases',ok:()=>completedPhases.size>=500,reward:'Logo Coroa',give:()=>ownedLogos.add('logo_crown')},
+{id:'r10',title:'Lenda dos setores',need:'Conclua 900 fases',ok:()=>completedPhases.size>=900,reward:'Moldura Aurora + 10.000 ★',give:()=>{ownedFrames.add('frame_rainbow');coins+=10000}}
+];
+function profileStyle(){const f=PROFILE_FRAMES.find(x=>x.id===equippedFrame)||PROFILE_FRAMES[0];const a=document.getElementById('profileAvatar');const p=document.getElementById('profileLogo');if(a){a.className='profileAvatar '+(f.cls||'');a.setAttribute('title','Personalizar perfil')}if(p){const l=PROFILE_LOGOS.find(x=>x.id===equippedLogo)||PROFILE_LOGOS[0];p.textContent=l.icon}const tp=document.getElementById('topProfileLogo');if(tp){const l=PROFILE_LOGOS.find(x=>x.id===equippedLogo)||PROFILE_LOGOS[0];tp.textContent=l.icon}const ta=document.getElementById('topProfileAvatar');if(ta){ta.className='avatar '+(f.cls||'')}}
+function openProfileCustom(){renderProfileCustom();document.getElementById('profileCustomModal')?.classList.add('show');document.getElementById('profileCustomModal')?.setAttribute('aria-hidden','false')}
+function closeProfileCustom(){document.getElementById('profileCustomModal')?.classList.remove('show');document.getElementById('profileCustomModal')?.setAttribute('aria-hidden','true')}
+function buyFrame(id){const x=PROFILE_FRAMES.find(v=>v.id===id);if(!x)return;if(ownedFrames.has(id))return equipFrame(id);if(coins<x.price)return showToast('Moedas insuficientes');coins-=x.price;ownedFrames.add(id);equippedFrame=id;saveGame();render();renderProfileCustom();showToast('Moldura comprada!')}
+function equipFrame(id){if(!ownedFrames.has(id))return;equippedFrame=id;saveGame();render();renderProfileCustom();showToast('Moldura equipada')}
+function buyLogo(id){const x=PROFILE_LOGOS.find(v=>v.id===id);if(!x)return;if(ownedLogos.has(id))return equipLogo(id);if(coins<x.price)return showToast('Moedas insuficientes');coins-=x.price;ownedLogos.add(id);equippedLogo=id;saveGame();render();renderProfileCustom();showToast('Logo comprado!')}
+function equipLogo(id){if(!ownedLogos.has(id))return;equippedLogo=id;saveGame();render();renderProfileCustom();showToast('Logo equipado')}
+function renderProfileCustom(){const fs=document.getElementById('frameShop'),ls=document.getElementById('logoShop');if(!fs||!ls)return;const pv=document.getElementById('customPreview'),pl=document.getElementById('customPreviewLogo');const f=PROFILE_FRAMES.find(x=>x.id===equippedFrame)||PROFILE_FRAMES[0],l=PROFILE_LOGOS.find(x=>x.id===equippedLogo)||PROFILE_LOGOS[0];if(pv)pv.className='profileAvatar previewAvatar '+(f.cls||'');if(pl)pl.textContent=l.icon;fs.innerHTML=PROFILE_FRAMES.map(x=>`<button type="button" class="customItem ${ownedFrames.has(x.id)?'owned':''} ${equippedFrame===x.id?'equipped':''}" onclick="buyFrame('${x.id}')"><span class="swatch ${x.cls||''}">${x.icon}</span><b>${x.name}</b><small>${ownedFrames.has(x.id)?(equippedFrame===x.id?'EQUIPADA':'EQUIPAR'):(x.price+' ★')}</small></button>`).join('');ls.innerHTML=PROFILE_LOGOS.map(x=>`<button type="button" class="customItem ${ownedLogos.has(x.id)?'owned':''} ${equippedLogo===x.id?'equipped':''}" onclick="buyLogo('${x.id}')"><span class="swatch">${x.icon}</span><b>${x.name}</b><small>${ownedLogos.has(x.id)?(equippedLogo===x.id?'EQUIPADO':'EQUIPAR'):(x.price+' ★')}</small></button>`).join('')}
+function claimProfileReward(id){const r=PROFILE_REWARDS.find(x=>x.id===id);if(!r||claimedRewards.has(id))return;if(!r.ok())return showToast('Recompensa ainda bloqueada');r.give();claimedRewards.add(id);saveGame();render();renderProfile();showToast('Recompensa recebida: '+r.reward)}
+function renderProfileRewards(){const el=document.getElementById('profileRewardsGrid');if(!el)return;el.innerHTML=PROFILE_REWARDS.map(r=>{const ok=r.ok(),claimed=claimedRewards.has(r.id);return `<div class="rewardItem ${ok?'done':''} ${claimed?'claimed':''}"><b>${r.title}</b><small>${r.need}<br>Prêmio: ${r.reward}</small><button type="button" ${!ok||claimed?'disabled':''} onclick="claimProfileReward('${r.id}')">${claimed?'RESGATADA':ok?'RESGATAR':'BLOQUEADA'}</button></div>`}).join('')}
+function renderProfile(){const level=1+Math.floor(completedPhases.size/10);document.getElementById('profileName').textContent=profileName;document.getElementById('profileLevel').textContent=level;document.getElementById('profilePhases').textContent=completedPhases.size;document.getElementById('statKills').textContent=missionKills;document.getElementById('statScore').textContent=Math.floor(totalScore).toLocaleString('pt-BR');document.getElementById('statAchievements').textContent=achievements.size;document.getElementById('statPhaseCount').textContent=completedPhases.size;document.getElementById('statPhaseCount')?.parentElement?.querySelector('b')?.setAttribute('title','de '+PHASES.length+' fases');profileStyle();document.getElementById('achievementGrid').innerHTML=ACHIEVEMENTS.map(a=>`<div class="achievement ${achievements.has(a[0])?'done':''}"><span class="achIcon">${a[1]}</span><h3>${a[2]}</h3><p>${a[3]}</p><small>${achievements.has(a[0])?'DESBLOQUEADA':'BLOQUEADA'}</small></div>`).join('');renderProfileRewards()}
+function renameProfile(){
+  if(coins<1000)return showToast('Você precisa de 1.000 moedas');
+  const modal=document.getElementById('renameModal'),input=document.getElementById('renameInput');
+  if(!modal||!input)return;
+  input.value=profileName;modal.classList.add('show');modal.setAttribute('aria-hidden','false');
+  setTimeout(()=>{input.focus();input.select()},60);
+}
+function closeRename(){const modal=document.getElementById('renameModal');if(modal){modal.classList.remove('show');modal.setAttribute('aria-hidden','true')}}
+function confirmRename(){
+  const input=document.getElementById('renameInput');
+  const clean=(input?.value||'').trim().replace(/\s+/g,' ').slice(0,18);
+  if(clean.length<2)return showToast('Nome muito curto');
+  if(coins<1000)return closeRename(),showToast('Você precisa de 1.000 moedas');
+  coins-=1000;profileName=clean;saveGame();render();renderProfile();closeRename();showToast('Nome alterado!');
+}
+
+function switchShopTab(tab){
+  const eq=document.getElementById('equipmentView'),sh=document.getElementById('shipsView');
+  document.getElementById('shopTabEquipment').classList.toggle('active',tab==='equipment');
+  document.getElementById('shopTabShips').classList.toggle('active',tab==='ships');
+  eq.classList.toggle('show',tab==='equipment');sh.classList.toggle('show',tab==='ships');
+  if(tab==='ships')renderShips();
+}
+function shipPreview(type){
+  return `<div class="ship falcon ${type}"><div class="shipCore"></div><div class="wing wl"></div><div class="wing wr"></div><div class="cockpit"></div><div class="engine el"></div><div class="engine er"></div><div class="detailLine dl"></div><div class="detailLine dr"></div><div class="light navL"></div><div class="light navR"></div><div class="antenna"></div><div class="missile l"></div><div class="missile r"></div></div>`;
+}
+function renderShips(){
+  const box=document.getElementById('shipStore');if(!box)return;
+  box.innerHTML=Object.values(SHIPS).map(sh=>{
+    const owned=ownedShips.has(sh.id),eq=selectedShip===sh.id;
+    const locked=!owned&&sh.id!=='thunder'&&sh.id!=='viper'&&sh.id!=='phantom'&&sh.id!=='titan';
+    return `<div class="shipCard ${owned?'owned':''} ${eq?'equipped':''}">
+      ${!owned?`<span class="shipLock">${sh.req||'BLOQUEADA'}</span>`:''}
+      ${sh.price?`<span class="shipPrice">★ ${sh.price.toLocaleString('pt-BR')}</span>`:''}
+      <div class="shipPreview">${shipPreview(sh.id)}</div>
+      <h3>${sh.name} • CLASSE ${sh.rar}</h3><p>${sh.desc}</p>
+      <div class="shipStats"><span>ATK ${sh.atk}</span><span>DEF ${sh.def}</span><span>SPD ${sh.spd}</span></div>
+      ${owned?`<button class="${eq?'secondary':''}" onclick="selectShip('${sh.id}')">${eq?'EQUIPADA':'EQUIPAR'}</button>`:`<button onclick="buyShip('${sh.id}')">COMPRAR</button>`}
+    </div>`;
+  }).join('');
+}
+function buyShip(id){
+  const sh=SHIPS[id];if(!sh||ownedShips.has(id))return selectShip(id);
+  if(coins<sh.price)return showToast('Moedas insuficientes');
+  coins-=sh.price;ownedShips.add(id);selectedShip=id;saveGame();render();renderShips();applyShipVisual();showToast(sh.name+' comprada e equipada!');
+}
+function selectShip(id){
+  if(!ownedShips.has(id))return buyShip(id);
+  selectedShip=id;saveGame();renderShips();applyShipVisual();showToast(SHIPS[id].name+' equipada!');
+}
+function equipmentListHtml(){return Object.entries(EQUIPMENT).map(([id,e])=>`<div class="eqCard rarityFrame rar-${e.rar} ${selectedEquipment===id?'selected':''}" onclick="selectEquipment('${id}')"><div class="eqTexture">${itemTexture(e.visual,e.rar)}<span class="classBadge">${e.rar}</span>${bought.has(id)?'<span class="ownedDot">✓</span>':''}</div><div class="eqMeta"><h3>${e.name}</h3><span class="eqType">${({weapon:'ARMA',motor:'MOTOR',shield:'ESCUDO',armor:'BLINDAGEM',core:'NÚCLEO',aim:'MIRA'})[e.cat]}</span><strong>★ ${e.price.toLocaleString('pt-BR')}</strong></div>${equipped[e.cat]===id?'<span class="equipped">EQUIPADO</span>':''}</div>`).join('')}
+function selectEquipment(id){selectedEquipment=id;renderArsenal()}
+function renderArsenal(){const list=document.getElementById('equipmentList');if(!list)return;list.innerHTML=equipmentListHtml();const e=EQUIPMENT[selectedEquipment];const isBought=bought.has(selectedEquipment),isEquipped=equipped[e.cat]===selectedEquipment;const stats=Object.entries(e.stats).map(([k,v])=>`<div class="statRow"><span>${({damage:'Dano',fireRate:'Cadência',speed:'Velocidade',accel:'Aceleração',dash:'Dash',shield:'Vida do escudo',shieldTime:'Duração do escudo',hp:'Vida máxima',resist:'Resistência',energy:'Energia máxima',cooldown:'Recarga',range:'Alcance',crit:'Chance crítica'})[k]||k}</span><b>+${v}%</b></div>`).join('');document.getElementById('equipmentDetail').innerHTML=`<div class="detailTop"><div class="detailTitleWrap"><div class="detailTexture">${itemTexture(e.visual,e.rar)}</div><div><h2>${e.name}</h2><small class="rarity rar-${e.rar}">CLASSE ${e.rar} • ${e.cat.toUpperCase()}</small></div></div><div>${isEquipped?'✓ EQUIPADO':''}</div></div><p class="detailDesc">${e.desc}</p>${stats}<div class="price">★ ${e.price.toLocaleString('pt-BR')}</div>${!isBought?`<button class="eqAction" onclick="buyEquipment('${selectedEquipment}')">COMPRAR</button>`:`<button class="eqAction ${isEquipped?'secondary':''}" onclick="equipEquipment('${selectedEquipment}')">${isEquipped?'EQUIPADO':'EQUIPAR'}</button>`}`}
+function buyEquipment(id){const e=EQUIPMENT[id];if(bought.has(id))return equipEquipment(id);if(coins<e.price)return showToast('Moedas insuficientes');coins-=e.price;bought.add(id);saveGame();render();renderArsenal();showToast(e.name+' comprado!')}
+function equipEquipment(id){const e=EQUIPMENT[id];if(!bought.has(id))return buyEquipment(id);equipped[e.cat]=id;saveGame();render();renderArsenal();applyShipVisual();showToast(e.name+' equipado!')}
+function buy(cost,name){if(coins<cost)return showToast('Moedas insuficientes');coins-=cost;saveGame();render();showToast(name+' comprado!')}
+function setAircraft(type){const ship=document.querySelector('.ship');ship.classList.remove('falcon','thunder','viper');ship.classList.add(type);showToast(type==='falcon'?'Nova Falcon equipada!':type==='thunder'?'Thunder em pré-visualização!':'Viper em pré-visualização!');saveGame()}
+function upgrade(type){if(coins<500)return showToast('Moedas insuficientes');coins-=500;if(type==='gun')gunLv++;if(type==='armor')armorLv++;if(type==='engine')engineLv++;saveGame();render();showToast('Upgrade aplicado!')}
+function equipShip(name){const id=name==='NOVA FALCON'?'falcon':name==='THUNDER'?'thunder':name==='VIPER'?'viper':'falcon';if(ownedShips.has(id))selectedShip=id;else if(id!=='falcon')return showToast('Compre esta nave na Loja primeiro');saveGame();renderShips();applyShipVisual();showToast((SHIPS[selectedShip]?.name||name)+' equipada!');closePanels()}
+function claimMission(n){if(n===1&&missionKills<10)return showToast('Missão ainda não concluída');coins+=300;render();saveGame();showToast('Recompensa recebida!')}
+function getStats(){let s={damage:1,fireDelay:1,speed:1,dash:1,hpMax:100,shieldTime:1,energy:100,cooldown:1,range:1,crit:0,resist:0};const add=id=>{if(!id)return;const st=EQUIPMENT[id]?.stats||{};if(st.damage)s.damage+=st.damage/100;if(st.fireRate)s.fireDelay*=Math.max(.35,1-st.fireRate/100);if(st.speed)s.speed+=st.speed/100;if(st.accel)s.speed+=st.accel/500;if(st.dash)s.dash+=st.dash/100;if(st.hp)s.hpMax+=st.hp;if(st.shieldTime)s.shieldTime+=st.shieldTime/100;if(st.energy)s.energy+=st.energy;if(st.cooldown)s.cooldown*=Math.max(.35,1-st.cooldown/100);if(st.range)s.range+=st.range/100;if(st.crit)s.crit=Math.min(60,s.crit+st.crit);if(st.resist)s.resist=Math.min(.65,s.resist+st.resist/100)};Object.values(equipped).forEach(add);const sh=SHIPS[selectedShip]||SHIPS.falcon;s.damage*=sh.bonus.damage;s.speed*=sh.bonus.speed;s.hpMax+=sh.bonus.hp;return s}
+function applyShipVisual(){const ships=document.querySelectorAll('.ship');ships.forEach(ship=>{ship.classList.remove('equippedWeapon','equippedMotor','equippedShield','equippedArmor','equippedCore','equippedAim','thunder','viper','phantom','titan','falcon');ship.classList.add(selectedShip);ship.classList.toggle('equippedWeapon',!!equipped.weapon);ship.classList.toggle('equippedMotor',!!equipped.motor);ship.classList.toggle('equippedShield',!!equipped.shield);ship.classList.toggle('equippedArmor',!!equipped.armor);ship.classList.toggle('equippedCore',!!equipped.core);ship.classList.toggle('equippedAim',!!equipped.aim)})}
+(function bootLoading(){
+  const screen=document.getElementById('loadingScreen');
+  const fill=document.getElementById('loadingFill');
+  const percent=document.getElementById('loadingPercent');
+  const tip=document.getElementById('loadingTip');
+  const status=document.getElementById('loadingStatus');
+  if(!screen||!fill||!percent)return;
+  const steps=[
+    [0,'Preparando hangar','INICIALIZANDO SISTEMAS...'],
+    [15,'Carregando nave NOVA FALCON','CARREGANDO NAVE...'],
+    [30,'Sincronizando perfil e inventário','SINCRONIZANDO DADOS...'],
+    [48,'Ativando Arsenal e equipamentos','ATIVANDO ARSENAL...'],
+    [66,'Preparando inimigos e fases','PREPARANDO COMBATE...'],
+    [84,'Inicializando controles','TESTANDO CONTROLES...'],
+    [100,'Sistema pronto','SISTEMA ONLINE']
+  ];
+  let p=0, finished=false;
+  const renderLoad=()=>{
+    fill.style.width=p+'%';
+    percent.textContent=p+'%';
+    let step=steps[0];
+    for(const s of steps) if(p>=s[0]) step=s;
+    tip.textContent=step[1];
+    status.textContent=step[2];
+  };
+  const finish=()=>{
+    if(finished)return;
+    finished=true;
+    p=100;renderLoad();
+    status.textContent='SISTEMA ONLINE';
+    tip.textContent='DECOLAGEM AUTORIZADA';
+    screen.classList.add('loadingTakeoff');
+    setTimeout(()=>{
+      document.body.classList.add('loaded');
+      window.dispatchEvent(new Event('skyRaidersReady'));
+      setTimeout(()=>screen.remove(),750);
+    },1100);
+  };
+  renderLoad();
+  // Start immediately so a later game initialization error cannot leave the player at 0%.
+  const timer=setInterval(()=>{
+    if(finished){clearInterval(timer);return;}
+    p=Math.min(100,p+1);
+    renderLoad();
+    if(p>=100){clearInterval(timer);finish();}
+  },35);
+  // Absolute fallback: force progress if the browser is under heavy load.
+  setTimeout(()=>{if(!finished){p=100;finish();}},5000);
+})();
+
+// Initialize the game UI after the loading sequence has started.
+try{loadSave();profileStyle();render();renderArsenal();renderShips();applyShipVisual();checkAchievements();renderProfile();renderPhases();}catch(err){console.warn('Sky Raiders init:',err)}
+
+const game=document.getElementById('game'),c=document.getElementById('gameCanvas'),ctx=c.getContext('2d');
+let running=false,paused=false,keys={},px,py,shots=[],enemies=[],enemyShots=[],particles=[],powerups=[];
+let score=0,hp=100,last=0,spawn=0,shootT=0,eventMode=false,wave=1,combo=1,comboTimer=0;
+let phaseBossSpawned=false,phaseFinished=false,phaseKillsStart=0;
+let firePressed=false,joyX=0,joyY=0,gameTime=0,soundOn=true,shieldTime=0,rapidTime=0,dashCooldown=0,dashFlash=0;
+let audioCtx=null,masterGain=null,musicTimer=null,musicStep=0;
+
+function resize(){c.width=innerWidth;c.height=innerHeight}
+addEventListener('resize',resize);resize();
+
+function initAudio(){
+  if(!soundOn)return;
+  if(!audioCtx){
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    masterGain=audioCtx.createGain(); masterGain.gain.value=.18; masterGain.connect(audioCtx.destination);
+  }
+  if(audioCtx.state==='suspended')audioCtx.resume();
+  startMusic();
+}
+function tone(freq,dur,type='sine',vol=.035,when=0){
+  if(!soundOn||!audioCtx||!masterGain)return;
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.type=type;o.frequency.setValueAtTime(freq,audioCtx.currentTime+when);
+  g.gain.setValueAtTime(0,audioCtx.currentTime+when);
+  g.gain.linearRampToValueAtTime(vol,audioCtx.currentTime+when+.015);
+  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+when+dur);
+  o.connect(g);g.connect(masterGain);o.start(audioCtx.currentTime+when);o.stop(audioCtx.currentTime+when+dur+.03);
+}
+function sfx(kind){
+  if(!soundOn)return;
+  if(kind==='shoot'){tone(690,.055,'sawtooth',.035);tone(980,.07,'triangle',.03,.018);tone(1450,.035,'sine',.016,.045)}
+  if(kind==='hit'){tone(220,.045,'square',.035);tone(125,.09,'sawtooth',.035,.025);tone(520,.05,'triangle',.02,.045)}
+  if(kind==='hitEnemy'){tone(320,.035,'square',.045);tone(560,.065,'triangle',.035,.018);tone(180,.09,'sawtooth',.025,.035)}
+  if(kind==='boom'){tone(110,.22,'sawtooth',.07);tone(55,.28,'triangle',.045,.03);tone(420,.09,'square',.025,.06)}
+  if(kind==='power'){tone(520,.12,'sine',.045);tone(780,.16,'sine',.04,.07);tone(1040,.22,'sine',.03,.14)}
+  if(kind==='damage'){tone(95,.18,'sawtooth',.07);tone(70,.18,'square',.035,.05)}
+  if(kind==='boss'){tone(90,.4,'sawtooth',.06);tone(140,.35,'triangle',.04,.12)}
+}
+function startMusic(){
+  if(musicTimer||!soundOn)return;
+  const notes=[220,277.18,329.63,440,329.63,277.18,246.94,329.63];
+  musicTimer=setInterval(()=>{
+    if(!running||paused)return;
+    const n=notes[musicStep++%notes.length];
+    tone(n,.42,'sine',.018);
+    tone(n/2,.5,'triangle',.012,.03);
+    if(musicStep%8===0)tone(55,.12,'sine',.025);
+  },420);
+}
+function stopMusic(){if(musicTimer){clearInterval(musicTimer);musicTimer=null}}
+function toggleSound(){
+  soundOn=!soundOn;
+  document.getElementById('pauseSound').textContent=soundOn?'ON':'OFF';
+  if(soundOn){initAudio();showToast('Som ativado')}else{stopMusic();if(masterGain)masterGain.gain.value=0;showToast('Som desativado')}
+  if(soundOn&&masterGain)masterGain.gain.value=.18;
+}
+
+addEventListener('keydown',e=>{
+  keys[e.key.toLowerCase()]=true;
+  if(e.code==='Space'){firePressed=true;e.preventDefault()}
+  if(e.key==='Escape'&&running)togglePause();
+});
+addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;if(e.code==='Space')firePressed=false});
+
+const joystick=document.getElementById('joystick'),stick=document.getElementById('stick');
+function setJoy(e){
+  const r=joystick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  let dx=e.clientX-cx,dy=e.clientY-cy,max=43,d=Math.hypot(dx,dy);
+  if(d>max){dx=dx/d*max;dy=dy/d*max}
+  joyX=dx/max;joyY=dy/max;stick.style.transform=`translate(${dx}px,${dy}px)`;
+}
+function resetJoy(){joyX=0;joyY=0;stick.style.transform='translate(0,0)'}
+joystick.addEventListener('pointerdown',e=>{if(paused)return;joystick.setPointerCapture(e.pointerId);setJoy(e)});
+joystick.addEventListener('pointermove',e=>{if(!paused&&(e.pressure||e.buttons))setJoy(e)});
+joystick.addEventListener('pointerup',resetJoy);joystick.addEventListener('pointercancel',resetJoy);
+
+const fireBtn=document.getElementById('fireBtn');
+fireBtn.addEventListener('pointerdown',e=>{e.preventDefault();if(!paused){initAudio();firePressed=true;fireBtn.setPointerCapture(e.pointerId)}});
+fireBtn.addEventListener('pointerup',()=>firePressed=false);fireBtn.addEventListener('pointercancel',()=>firePressed=false);
+
+function updateBossHud(){
+  const boss=enemies.find(e=>e.boss);
+  const hud=document.getElementById('bossHud');
+  if(!boss){hud.classList.remove('show');return}
+  hud.classList.add('show');
+  const pct=Math.max(0,Math.min(100,(boss.hp/boss.maxHp)*100));
+  document.getElementById('bossBarFill').style.width=pct+'%';
+}
+function dash(){
+  if(!running||paused||dashCooldown>0)return;
+  const dirY=joyY<-.15||keys.arrowup||keys.w ? -1 : -1;
+  px=Math.max(45,Math.min(c.width-45,px+joyX*105));
+  py=Math.max(85,Math.min(c.height-70,py+dirY*105));
+  dashCooldown=4200/Math.max(1,getStats().dash)/Math.max(.1,getStats().cooldown);dashFlash=220;
+  document.getElementById('dashBtn').classList.add('cooldown');
+  document.getElementById('game').classList.remove('dashPulse');void document.getElementById('game').offsetWidth;document.getElementById('game').classList.add('dashPulse');
+  sfx('power');
+}
+function showWave(){
+  const b=document.getElementById('waveBanner');
+  document.getElementById('waveTitle').textContent=`ONDA ${wave}`;
+  document.getElementById('waveText').textContent=wave%5===0?'CHEFE SE APROXIMANDO':'Esquadrão inimigo detectado';
+  b.classList.add('show');clearTimeout(window.waveTT);window.waveTT=setTimeout(()=>b.classList.remove('show'),1700);
+}
+function togglePause(force){
+  if(!running)return;
+  paused=typeof force==='boolean'?force:!paused;
+  document.getElementById('pauseOverlay').classList.toggle('show',paused);
+  document.getElementById('pauseButton').textContent=paused?'▶':'Ⅱ';
+  if(paused){firePressed=false;resetJoy();stopMusic()}
+  else{last=performance.now();initAudio();requestAnimationFrame(loop)}
+}
+function restartGame(){
+  document.getElementById('pauseOverlay').classList.remove('show');paused=false;
+  startGame(eventMode);
+}
+const pauseButton=document.getElementById('pauseButton');
+pauseButton.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();togglePause()});
+const pauseOverlay=document.getElementById('pauseOverlay');
+pauseOverlay.addEventListener('pointerdown',e=>{
+  const btn=e.target.closest('[data-pause-action]');
+  if(!btn)return;
+  e.preventDefault();e.stopPropagation();
+  const action=btn.dataset.pauseAction;
+  if(action==='continue')togglePause(false);
+  if(action==='restart')restartGame();
+  if(action==='sound')toggleSound();
+  if(action==='menu')endGame();
+});
+document.getElementById('dashBtn').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();dash()});
+document.addEventListener('keydown',e=>{
+  if(e.key.toLowerCase()==='p')togglePause();
+  if(e.key==='Escape')closeRename();
+  if(e.key==='Enter'&&document.getElementById('renameModal')?.classList.contains('show'))confirmRename();
+});
+function startGame(event=false){
+  initAudio();eventMode=event;closePanels();
+  const ph=PHASES[selectedPhase-1]||PHASES[0];
+  document.getElementById('phaseTransition').classList.add('show');
+  document.getElementById('transitionPhase').textContent='FASE '+String(selectedPhase).padStart(2,'0');
+  document.getElementById('transitionName').textContent=ph.name;
+  document.getElementById('transitionDesc').textContent=ph.desc;
+  let ct=3;document.getElementById('transitionCountdown').textContent='INICIANDO EM '+ct;
+  const ci=setInterval(()=>{ct--;document.getElementById('transitionCountdown').textContent=ct>0?'INICIANDO EM '+ct:'ENTRANDO NO SETOR';if(ct<=0){clearInterval(ci);document.getElementById('phaseTransition').classList.remove('show');beginCombat(event)}},500);
+}
+function beginCombat(event=false){
+  game.style.display='block';running=true;paused=false;document.getElementById('pauseOverlay').classList.remove('show');
+  score=0;hp=getStats().hpMax;shots=[];enemies=[];enemyShots=[];particles=[];powerups=[];phaseBossSpawned=false;phaseFinished=false;phaseKillsStart=missionKills;
+  document.getElementById('gameEnemies').innerHTML='';document.querySelectorAll('.powerupDom,.enemyShot').forEach(x=>x.remove());
+  px=c.width/2;py=c.height-115;last=performance.now();spawn=0;shootT=0;gameTime=0;wave=1;combo=1;comboTimer=0;shieldTime=0;rapidTime=0;dashCooldown=0;dashFlash=0;
+  const gp=document.getElementById('gamePlayer');
+  gp.classList.remove('thunder','viper','phantom','titan','falcon','shielded','rapid','damageFlash','equippedWeapon','equippedMotor','equippedShield','equippedArmor','equippedCore','equippedAim');gp.classList.add(selectedShip);applyShipVisual();
+  document.getElementById('wave').textContent=wave;document.getElementById('hp').textContent=hp;document.getElementById('bossHud').classList.remove('show');document.getElementById('score').textContent=score;document.getElementById('comboHud').textContent='COMBO x1';showWave();sfx('power');requestAnimationFrame(loop);
+}
+function completePhase(){if(!running||phaseFinished||eventMode)return;phaseFinished=true;running=false;paused=false;stopMusic();game.style.display='none';document.getElementById('pauseOverlay').classList.remove('show');document.getElementById('bossHud').classList.remove('show');document.getElementById('gameEnemies').innerHTML='';document.querySelectorAll('.powerupDom,.enemyShot').forEach(x=>x.remove());const ph=PHASES[selectedPhase-1]||PHASES[0];const reward=ph.reward;coins+=reward;completedPhases.add(selectedPhase);totalScore+=score;const phaseKills=missionKills-phaseKillsStart;if(hp>0)survivorPhases++;if(selectedPhase<PHASES.length&&!completedPhases.has(selectedPhase+1))selectedPhase=Math.min(PHASES.length,selectedPhase+1);saveGame();render();checkAchievements();renderPhases();document.getElementById('phaseEndTitle').textContent='FASE '+String(ph.id).padStart(2,'0')+' CONCLUÍDA';document.getElementById('phaseEndDesc').textContent=ph.name+' • Setor neutralizado com sucesso.';document.getElementById('phaseEndReward').textContent='+'+reward.toLocaleString('pt-BR')+' ★';document.getElementById('phaseEndStats').textContent='Pontuação: '+Math.floor(score).toLocaleString('pt-BR')+' • Inimigos: '+phaseKills;document.getElementById('nextPhaseBtn').textContent=selectedPhase>=PHASES.length?'JOGAR FASE 900':'PRÓXIMA FASE';document.getElementById('phaseEnd').classList.add('show');resetJoy();firePressed=false}
+function closePhaseEnd(){document.getElementById('phaseEnd').classList.remove('show');openPanel('phases')}
+function nextPhase(){document.getElementById('phaseEnd').classList.remove('show');if(selectedPhase>PHASES.length)selectedPhase=PHASES.length;saveGame();startGame(false)}
+
+function endGame(){
+  running=false;paused=false;stopMusic();game.style.display='none';
+  document.getElementById('pauseOverlay').classList.remove('show');
+  document.getElementById('bossHud').classList.remove('show');
+  document.getElementById('gameEnemies').innerHTML='';
+  document.querySelectorAll('.powerupDom,.enemyShot').forEach(x=>x.remove());
+  totalScore+=score;checkAchievements();saveGame();document.getElementById('rankScore').textContent=(8240+score)+' pontos';
+  resetJoy();firePressed=false;
+}
+function shoot(){
+  const stats=getStats(); const spread=rapidTime>0?.12:0;
+  shots.push({x:px-10,y:py-42,v:13,dx:-spread});
+  shots.push({x:px+10,y:py-42,v:13,dx:spread});
+  sfx('shoot');
+}
+function makeEnemyDom(type,boss=false){
+  const d=document.createElement('div');
+  d.className='enemyDom '+type+(boss?' boss':'');
+  d.innerHTML=`<div class="enemyVisual"><div class="enemyCore"></div></div>`;
+  document.getElementById('gameEnemies').appendChild(d);return d;
+}
+function spawnEnemy(type){
+  const types=['scout','striker','tank','zigzag','shooter'];
+  type=type||types[Math.floor(Math.random()*types.length)];
+  const data={
+    scout:[2.6,1,18],striker:[3.6,1,22],tank:[1.25,5,50],zigzag:[2.5,2,30],shooter:[1.65,3,38]
+  }[type];
+  const diff=getDifficulty(selectedPhase), scale=diff.mult*(1+Math.max(0,selectedPhase-1)*.00022);
+  const baseHp=data[1]*scale+Math.floor(wave/8);
+  const e={type,x:50+Math.random()*(c.width-100),y:-70,v:data[0]*(0.9+scale*.1)+wave*.035,hp:baseHp,maxHp:baseHp,
+    points:Math.round(data[2]*(0.9+scale*.12)),boss:false,dom:null,phase:Math.random()*10,shot:Math.max(420,800/scale)+Math.random()*900};
+  e.dom=makeEnemyDom(type);enemies.push(e);
+}
+function spawnBoss(){
+  const diff=getDifficulty(selectedPhase),scale=diff.mult*(1+Math.max(0,selectedPhase-1)*.00025),bossHp=(35+wave*3)*scale;const e={type:'boss',x:c.width/2,y:-120,v:.7+scale*.04,hp:bossHp,maxHp:bossHp,points:Math.round(500*scale),boss:true,dom:null,phase:0,shot:Math.max(320,500/scale)};
+  e.dom=makeEnemyDom('boss',true);enemies.push(e);sfx('boss');
+}
+function spawnPowerup(x,y){
+  const types=[['shield','S'],['rapid','R'],['heal','+'],['bomb','B']];
+  const [type,icon]=types[Math.floor(Math.random()*types.length)];
+  const d=document.createElement('div');d.className='powerupDom '+type;d.innerHTML=`<b>${icon}</b>`;
+  d.style.left=x+'px';d.style.top=y+'px';document.getElementById('gameScene').appendChild(d);
+  powerups.push({x,y,v:.55,type,dom:d,life:type==='heal'?15000:type==='rapid'?14000:type==='shield'?14000:11000});
+}
+function boom(x,y,big=false){
+  const n=big?34:12;
+  for(let i=0;i<n;i++)particles.push({x,y,vx:(Math.random()-.5)*(big?9:6),vy:(Math.random()-.5)*(big?9:6),life:big?48:30,size:Math.random()*4+2});
+  sfx(big?'boom':'hit');
+}
+function damage(amount){
+  if(shieldTime>0)return;
+  hp-=Math.max(1,amount*(1-getStats().resist));sfx('damage');
+  const gp=document.getElementById('gamePlayer');gp.classList.remove('damageFlash');void gp.offsetWidth;gp.classList.add('damageFlash');
+  document.getElementById('hp').textContent=Math.max(0,hp);
+  if(hp<=0){showToast('Nave destruída!');endGame()}
+}
+function collectPower(p,i){
+  if(p.type==='shield'){shieldTime=12000*getStats().shieldTime;document.getElementById('gamePlayer').classList.add('shielded')}
+  if(p.type==='rapid'){rapidTime=12000;document.getElementById('gamePlayer').classList.add('rapid')}
+  if(p.type==='heal'){hp=Math.min(getStats().hpMax,hp+40);document.getElementById('hp').textContent=hp}
+  if(p.type==='bomb'){
+    enemies.forEach(e=>{e.hp-=6});
+    enemyShots.length=0;
+    showToast('BOMBA DE ENERGIA!');
+  }
+  if(p.dom)p.dom.remove();powerups.splice(i,1);sfx('power');
+}
+function loop(t){
+  if(!running||paused)return;
+  let dt=Math.min(30,t-last);last=t;gameTime+=dt;
+  if(dashCooldown>0){dashCooldown-=dt;if(dashCooldown<=0)document.getElementById('dashBtn').classList.remove('cooldown')}
+  if(dashFlash>0)dashFlash-=dt;
+  const stats=getStats(); let speed=(6.2+(engineLv-1)*.35)*stats.speed,mx=joyX,my=joyY;
+  if(keys.arrowleft||keys.a)mx-=1;if(keys.arrowright||keys.d)mx+=1;if(keys.arrowup||keys.w)my-=1;if(keys.arrowdown||keys.s)my+=1;
+  const mag=Math.hypot(mx,my);if(mag>1){mx/=mag;my/=mag}
+  px+=mx*speed;py+=my*speed;px=Math.max(35,Math.min(c.width-35,px));py=Math.max(80,Math.min(c.height-40,py));
+
+  if(comboTimer>0)comboTimer-=dt;else if(combo>1){combo=1;document.getElementById('comboHud').textContent='COMBO x1'}
+  if(shieldTime>0){shieldTime-=dt;if(shieldTime<=0)document.getElementById('gamePlayer').classList.remove('shielded')}
+  if(rapidTime>0){rapidTime-=dt;if(rapidTime<=0)document.getElementById('gamePlayer').classList.remove('rapid')}
+
+  shootT+=dt;
+  const statsFire=getStats(); const fireDelay=rapidTime>0?55:Math.max(35,(105-Math.min(40,gunLv*5))*statsFire.fireDelay);
+  if(firePressed&&shootT>fireDelay){shoot();shootT=0}
+
+  spawn+=dt;
+  const interval=Math.max(300,eventMode?470-wave*10:760-wave*13);
+  if(spawn>interval){
+    spawn=0;
+    if(wave%5===0&&enemies.filter(e=>e.boss).length===0&&Math.random()<.2)spawnBoss();
+    else{spawnEnemy();if(eventMode||Math.random()<Math.min(.45,wave*.025))spawnEnemy()}
+  }
+  if(Math.floor(gameTime/12000)+1>wave){
+    wave=Math.floor(gameTime/12000)+1;document.getElementById('wave').textContent=wave;showWave();
+    if(wave%3===0&&!phaseBossSpawned){phaseBossSpawned=true;spawnBoss();}
+  }
+
+  shots.forEach(s=>{s.y-=s.v;s.x+=s.dx||0});shots=shots.filter(s=>s.y>-60&&s.x>-30&&s.x<c.width+30);
+
+  enemies.forEach(e=>{
+    e.y+=e.v;
+    if(e.type==='zigzag')e.x+=Math.sin((gameTime+e.phase*500)*.004)*2.5;
+    else if(e.type==='striker')e.x+=(px-e.x)*.004;
+    else e.x+=Math.sin((gameTime+e.phase*400)*.002)*.7;
+    if(e.type==='shooter'||e.boss){
+      e.shot-=dt;
+      if(e.shot<=0){
+        e.shot=e.boss?Math.max(330,650-wave*10):1300+Math.random()*700;
+        enemyShots.push({x:e.x,y:e.y+25,v:3.7+(e.boss?.6:0),dx:(px-e.x)/(Math.abs(py-e.y)+80)*1.7,boss:e.boss});
+      }
+    }
+    if(e.dom){e.dom.style.left=e.x+'px';e.dom.style.top=e.y+'px'}
+  });
+
+  enemyShots.forEach(s=>{s.y+=s.v;s.x+=s.dx});
+  for(let i=enemyShots.length-1;i>=0;i--){
+    const s=enemyShots[i];if(s.y>c.height+40||s.x<0||s.x>c.width){enemyShots.splice(i,1);continue}
+    if(Math.hypot(s.x-px,s.y-py)<30){enemyShots.splice(i,1);damage(s.boss?18:10)}
+  }
+
+  for(let i=powerups.length-1;i>=0;i--){
+    const p=powerups[i];p.y+=p.v;p.life-=dt;
+    p.dom.style.left=p.x+'px';p.dom.style.top=p.y+'px';
+    if(Math.hypot(p.x-px,p.y-py)<38){collectPower(p,i);continue}
+    if(p.life<=0||p.y>c.height+40){p.dom.remove();powerups.splice(i,1)}
+  }
+
+  for(let i=enemies.length-1;i>=0;i--){
+    const e=enemies[i];
+    if(e.y>c.height+90){e.dom?.remove();enemies.splice(i,1);continue}
+    if(Math.hypot(e.x-px,e.y-py)<(e.boss?72:38)){e.dom?.remove();enemies.splice(i,1);damage(e.boss?30:14);boom(e.x,e.y,true);if(!running)return}
+  }
+
+  updateBossHud();
+  for(let i=enemies.length-1;i>=0;i--)for(let j=shots.length-1;j>=0;j--){
+    const e=enemies[i],s=shots[j];
+    const statsHit=getStats();
+    if(Math.hypot(e.x-s.x,e.y-s.y)<(e.boss?65:e.type==='tank'?43:31)*statsHit.range){
+      let dmg=statsHit.damage*(gunLv>=3?1.35:1);if(Math.random()*100<statsHit.crit)dmg*=1.75;e.hp-=dmg;shots.splice(j,1);sfx('hitEnemy');
+      if(e.hp<=0){
+        const gain=e.points*combo;score+=gain;coins+=e.boss?180:Math.min(18,Math.max(6,Math.floor(6+e.points*.12)));missionKills++;saveGame();combo=Math.min(8,combo+1);comboTimer=2500;
+        document.getElementById('comboHud').textContent='COMBO x'+combo;
+        if(Math.random()<.22&&!e.boss)spawnPowerup(e.x,e.y);
+        boom(e.x,e.y,e.boss);
+        if(e.boss){score+=250;coins+=180;bossesDefeated++;saveGame();showToast('CHEFE DESTRUÍDO! +180 ★');setTimeout(()=>completePhase(),120)}
+        e.dom?.remove();enemies.splice(i,1)
+      }
+      break;
+    }
+  }
+
+  particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vx*=.98;p.vy*=.98;p.life--});
+  particles=particles.filter(p=>p.life>0);
+  const gp=document.getElementById('gamePlayer');gp.style.left=px+'px';gp.style.top=py+'px';
+  document.getElementById('score').textContent=Math.floor(score);
+  document.getElementById('m1').textContent=Math.min(10,missionKills);
+  draw(t);requestAnimationFrame(loop);
+}
+function draw(t){
+  ctx.clearRect(0,0,c.width,c.height);
+  const g=ctx.createLinearGradient(0,0,0,c.height);g.addColorStop(0,'#020914');g.addColorStop(.5,'#071c31');g.addColorStop(1,'#020913');ctx.fillStyle=g;ctx.fillRect(0,0,c.width,c.height);
+  for(let i=0;i<180;i++){
+    let x=(i*97)%c.width,y=(i*53+t*.025*(1+(i%4)*.3))%c.height;
+    ctx.fillStyle=i%13===0?'rgba(110,215,255,.9)':'rgba(190,235,255,.55)';
+    ctx.fillRect(x,y,i%17===0?2.5:1.5,i%17===0?2.5:1.5);
+  }
+  ctx.globalAlpha=.13;ctx.fillStyle='#1e8db8';ctx.beginPath();ctx.ellipse(c.width*.18,c.height*.36,c.width*.34,c.height*.12,-.25,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#713fba';ctx.beginPath();ctx.ellipse(c.width*.84,c.height*.65,c.width*.3,c.height*.16,.3,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+  shots.forEach(s=>{ctx.save();ctx.shadowBlur=14;ctx.shadowColor='#ffe45c';ctx.fillStyle='#fff7a0';ctx.fillRect(s.x-3,s.y-15,6,23);ctx.fillStyle='#ffc928';ctx.fillRect(s.x-2,s.y-20,4,8);ctx.restore()});
+  enemyShots.forEach(s=>{ctx.save();ctx.fillStyle=s.boss?'#ff4770':'#65eaff';ctx.shadowBlur=12;ctx.shadowColor=ctx.fillStyle;ctx.fillRect(s.x-3,s.y-11,6,20);ctx.restore()});
+  particles.forEach(p=>{ctx.fillStyle=p.life>20?'#ffd34d':'#ff7b35';ctx.globalAlpha=Math.max(0,p.life/45);ctx.fillRect(p.x,p.y,p.size,p.size)});
+  ctx.globalAlpha=1;
+}
+
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('selectstart',e=>e.preventDefault());
+document.addEventListener('dragstart',e=>e.preventDefault());
+document.addEventListener('gesturestart',e=>e.preventDefault());
+document.addEventListener('touchstart',e=>{if(e.target.closest('#game')&&!e.target.closest('button')&&!e.target.closest('#pauseOverlay'))e.preventDefault()},{passive:false});
+</script>
+</body>
+</html>
